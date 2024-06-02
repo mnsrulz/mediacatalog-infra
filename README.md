@@ -14,3 +14,5 @@ sudo apt-get install helm
 
 create secret
 kubectl create secret generic mediacstreamer --from-literal=LINKS_API_URL='https://uname:pwd@mediacatalogcache.netlify.app'
+
+kubectl create secret generic mediacatalogworker --from-literal=PUSHER_APP_KEY='' --from-literal=PLEX_API_TOKEN='' --from-literal=GOOGLE_DRIVE_SERVICE_ACCOUNT_EMAIL='' --from-literal=GOOGLE_DRIVE_JWT_KEY=''
