@@ -123,3 +123,7 @@ spec:
               value: "1000"
             - name: PGID 
               value: "1000"
+          resources: # limit the resources
+            limits:
+              memory: 256Mi
+              cpu: 100m
