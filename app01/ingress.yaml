@@ -1,0 +1,47 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mediacatalogadmin
+spec:
+  ingressClassName: traefik
+  rules:
+    - http:
+        paths:
+          - path: /streamer
+            pathType: Prefix
+            backend:
+              service:
+                name: mediastreamer
+                port:
+                  number: 3000
+          - path: /ytapi
+            pathType: Prefix
+            backend:
+              service:
+                name: ytstreamer
+                port:
+                  number: 8000
+          - path: /jellyfin
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin-service
+                port:
+                  number: 8096
+          - path: /pserve
+            pathType: Prefix
+            backend:
+              service:
+                name: staticserver
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: plex-service
+                port:
+                  number: 32400
+
+
