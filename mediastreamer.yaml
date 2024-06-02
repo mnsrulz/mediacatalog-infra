@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mediastreamer
+spec:
+  ports:
+    - name: mediastreamerport
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: mediastreamer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediastreamer
+spec:
+  selector:
+    matchLabels:
+      app: mediastreamer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mediastreamer
+    spec:
+      containers:
+        - name: mediastreamer
+          image: ghcr.io/mnsrulz/mediastreamer:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: LINKS_API_URL
+              value: ""
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
+            - name: ROOT_PATH
+              value: "/streamer"
+
+
+
