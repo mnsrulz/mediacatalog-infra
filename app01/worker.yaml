@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediacatalogworker
+spec:
+  selector:
+    matchLabels:
+      app: mediacatalogworker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mediacatalogworker
+    spec:
+      containers:
+        - name: mediacatalog-worker
+          image: ghcr.io/mnsrulz/mediacatalog-worker:latest
+          imagePullPolicy: Always
+          env:
+                        
+            - name: LINKS_API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mediacstreamer
+                  key: LINKS_API_URL
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
+            - name: PUSHER_APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mediacatalogworker
+                  key: PUSHER_APP_KEY
+            - name: URL_RESOLVER_TIMEOUT_SECONDS
+              value: "30"
+            - name: DEBUG
+              value: "nurl:*"
+            - name: GOOGLE_DRIVE_SERVICE_ACCOUNT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: mediacatalogworker
+                  key: GOOGLE_DRIVE_SERVICE_ACCOUNT_EMAIL
+            - name: GOOGLE_DRIVE_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mediacatalogworker
+                  key: GOOGLE_DRIVE_JWT_KEY
+            - name: PLEX_HOST_IP
+              value: "192.168.0.30"
+            - name: PLEX_HOST_PORT
+              value: "80"
+            - name: PLEX_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mediacatalogworker
+                  key: PLEX_API_TOKEN
+            - name: PLEX_MOVIE_SECTION_NAME
+              value: PlexMovies
+            - name: PLEX_TV_SECTION_NAME
+              value: "PlexTv"
+
+
