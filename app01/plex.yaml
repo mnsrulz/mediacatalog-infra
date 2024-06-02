@@ -102,24 +102,24 @@ spec:
               value: "Etc/UTC"
             - name: VERSION
               value: "docker"
-      - name: jellyfin
-        image: lscr.io/linuxserver/jellyfin:latest
-       #  imagePullPolicy: IfNotPresent
-        volumeMounts:
-          - mountPath: /config
-            name: jellyfinconfig
-          - mountPath: /cache
-            name: jellyfincache
-          - mountPath: /media
-            name: plexmedia
-            readOnly: true
-            mountPropagation: HostToContainer
-        ports:
-          - containerPort: 8096
-        env:
-          - name: JELLYFIN_PublishedServerUrl
-            value: "192.168.0.30/jellyfin/"
-          - name: PUID
-            value: "1000"
-          - name: PGID 
-            value: "1000"
+        - name: jellyfin
+          image: lscr.io/linuxserver/jellyfin:latest
+        #  imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /config
+              name: jellyfinconfig
+            - mountPath: /cache
+              name: jellyfincache
+            - mountPath: /media
+              name: plexmedia
+              readOnly: true
+              mountPropagation: HostToContainer
+          ports:
+            - containerPort: 8096
+          env:
+            - name: JELLYFIN_PublishedServerUrl
+              value: "192.168.0.30/jellyfin/"
+            - name: PUID
+              value: "1000"
+            - name: PGID 
+              value: "1000"
