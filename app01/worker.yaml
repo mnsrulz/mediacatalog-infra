@@ -31,6 +31,11 @@ spec:
                 secretKeyRef:
                   name: mediacatalogworker
                   key: PUSHER_APP_KEY
+            - name: LOGTAIL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mediacatalogworker
+                  key: LOGTAIL_TOKEN
             - name: URL_RESOLVER_TIMEOUT_SECONDS
               value: "30"
             - name: DEBUG
