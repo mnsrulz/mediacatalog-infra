@@ -38,8 +38,11 @@ spec:
                 secretKeyRef:
                   name: mediacstreamer
                   key: LINKS_API_URL
-
-              value: ""
+            - name: LOGTAIL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mediacatalogworker
+                  key: LOGTAIL_TOKEN
             - name: NODE_TLS_REJECT_UNAUTHORIZED
               value: "0"
             - name: ROOT_PATH
