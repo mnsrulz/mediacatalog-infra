@@ -19,3 +19,5 @@ kubectl create secret generic mediacatalogworker --from-literal=PUSHER_APP_KEY='
 
 #to edit secrets
 kubectl edit secret mediacatalogworker
+
+mediastreamer and mediacatalogworker shares same token for logtail for now. Will replace it in near future.
