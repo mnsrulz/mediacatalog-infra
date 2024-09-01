@@ -21,3 +21,6 @@ kubectl create secret generic mediacatalogworker --from-literal=PUSHER_APP_KEY='
 kubectl edit secret mediacatalogworker
 
 mediastreamer and mediacatalogworker shares same token for logtail for now. Will replace it in near future.
+
+When setting up plex,please make sure to add the following address in the "Network > Custom server access URLs" section. The first one is needed for plex android to display images appropriately
+http://192.168.0.30:32400, http://192.168.0.30
