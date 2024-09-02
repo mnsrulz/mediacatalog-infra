@@ -69,6 +69,7 @@ spec:
             - "--read-only"
             - "--vfs-read-chunk-size=1M"
             - "--vfs-read-chunk-size-limit=8M"
+            - "--dir-cache-time=5s" #default is 5minutes which seems too long.
             - "AllDrives:/"
             - "/mnt/data"
           volumeMounts:
