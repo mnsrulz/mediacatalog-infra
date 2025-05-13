@@ -1,5 +1,12 @@
 # mediacatalog-infra
 
+## Setup the argocd
+https://argo-cd.readthedocs.io/en/stable/getting_started/
+```
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
 ## Setup vault cli
 https://developer.hashicorp.com/hcp/tutorials/get-started-hcp-vault-secrets/hcp-vault-secrets-install-cli
 
