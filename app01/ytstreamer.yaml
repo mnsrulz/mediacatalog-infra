@@ -26,10 +26,13 @@ spec:
       labels:
         app: ytstreamer
     spec:
+      nodeSelector:
+        disktype: MEM
       containers:
         - name: ytstreamer
           image: ghcr.io/mnsrulz/ytdlp-web:latest
           imagePullPolicy: Always
+          
           ports:
             - containerPort: 8000
           env:
