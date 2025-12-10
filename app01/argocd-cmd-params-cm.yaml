@@ -5,4 +5,5 @@ metadata:
   namespace: argocd
 data:
   server.insecure: "true" # Configures the argocd-server to run in insecure mode
-  server.basehref: "/argocd" # Sets the base URL for Argo CD when running behind a reverse proxy
+  server.rootpath: "/argocd" # Sets the base URL for Argo CD when running behind a reverse proxy
+  server.basehref: "/argocd/" # Sets the base URL for Argo CD when running behind a reverse proxy
