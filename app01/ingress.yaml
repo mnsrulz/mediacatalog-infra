@@ -43,7 +43,6 @@ spec:
                 name: plex-service
                 port:
                   number: 32400
-                  number: 80
           - path: /argocd
             pathType: Prefix
             backend:
