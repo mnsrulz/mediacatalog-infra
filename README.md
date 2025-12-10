@@ -52,3 +52,31 @@ kubectl -n kube-system patch deployment traefik \
   --type='json' \
   -p='[{"op": "replace", "path": "/spec/template/spec/nodeSelector", "value":{"disktype":"SSD"}}]'
 ```
+
+## to add the agent
+```
+## make sure to install the same k3s version as in the server
+## run me from the server to generate token
+k3s token generate
+
+## run me from the agent
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.0.30:6443 K3S_TOKEN=REPLACE_TOKEN INSTALL_K3S_VERSION=v1.30.4+k3s1 sh -
+
+```
+
+## to configure firewall (needs to run from server and agent)
+```
+# install firewall
+apk add ip6tables ufw
+
+# Allow K3s API and all necessary ports if they aren't already
+ufw allow 6443/tcp
+ufw allow 10250/tcp
+
+# Crucial: Allow UDP port 8472 for Flannel VXLAN overlay traffic
+ufw allow 8472/udp
+
+# Ensure UFW is enabled and rules applied
+ufw enable 
+ufw status
+```
