@@ -55,6 +55,8 @@ spec:
             path: /home/madhu/.config/rclone
         - name: plexmedia
           emptyDir: {}
+      nodeSelector:
+        disktype: SSD
       containers:
         - name: rclone
           securityContext:
