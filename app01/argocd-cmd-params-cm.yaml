@@ -4,8 +4,8 @@ metadata:
   name: argocd-cmd-params-cm
   namespace: argocd
 data:
-  server.insecure: true # Configures the argocd-server to run in insecure mode
-  server.rootpath: /argocd # Sets the base URL for Argo CD when running behind a reverse proxy
-  server.basehref: /argocd/ # Sets the base URL for Argo CD when running behind a reverse proxy
-  server.ingress.ingressClassName: traefik
-  server.ingress.enabled: true
+  server.insecure: "true" # Configures the argocd-server to run in insecure mode
+  server.rootpath: "/argocd" # Sets the base URL for Argo CD when running behind a reverse proxy
+  server.basehref: "/argocd/" # Sets the base URL for Argo CD when running behind a reverse proxy
+  server.ingress.ingressClassName: "traefik"
+  server.ingress.enabled: "true"
