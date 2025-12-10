@@ -41,3 +41,14 @@ When setting up `plex`, please make sure to add the following address in the `Ne
 ```
 http://192.168.0.30:32400, http://192.168.0.30
 ```
+
+```
+
+kubectl -n kube-system patch deployment traefik \
+  --type='json' \
+  -p='[{"op": "add", "path": "/spec/template/spec/nodeSelector", "value":{"disktype":"SSD"}}]'
+
+kubectl -n kube-system patch deployment traefik \
+  --type='json' \
+  -p='[{"op": "replace", "path": "/spec/template/spec/nodeSelector", "value":{"disktype":"SSD"}}]'
+```
