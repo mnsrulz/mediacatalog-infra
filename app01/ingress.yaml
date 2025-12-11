@@ -22,13 +22,6 @@ spec:
                 name: ytstreamer
                 port:
                   number: 8000
-          # - path: /jellyfin
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: jellyfin-service
-          #       port:
-          #         number: 8096
           - path: /pserve
             pathType: Prefix
             backend:
@@ -43,12 +36,3 @@ spec:
                 name: plex-service
                 port:
                   number: 32400
-          # - path: /argocd
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: argocd-server
-          #       port:
-          #         number: 80
-
-
