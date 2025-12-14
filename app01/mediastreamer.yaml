@@ -26,6 +26,8 @@ spec:
       labels:
         app: mediastreamer
     spec:
+      nodeSelector:
+        disktype: MEM
       containers:
         - name: mediastreamer
           image: ghcr.io/mnsrulz/mediastreamer:latest
