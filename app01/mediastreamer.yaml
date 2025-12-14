@@ -47,6 +47,8 @@ spec:
                   key: LOGTAIL_TOKEN
             - name: NODE_TLS_REJECT_UNAUTHORIZED
               value: "0"
+            - name: MAX_BUFFER_SIZE_MB
+              value: "1024"
             - name: ROOT_PATH
               value: "/streamer"
 
