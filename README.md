@@ -80,3 +80,7 @@ ufw allow 8472/udp
 ufw enable 
 ufw status
 ```
+
+## configure blob storage secrets
+kubectl delete secret blob-rclone-conf
+kubectl create secret generic blob-rclone-conf --from-file=rclone.conf

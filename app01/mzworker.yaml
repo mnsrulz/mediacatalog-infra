@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mzworker-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mzworker
+  template:
+    metadata:
+      labels:
+        app: mzworker
+    spec:
+      volumes:
+        - name: secret-config
+          secret:
+            secretName: blob-rclone-conf
+        - name: mzdata
+          emptyDir: {}
+      nodeSelector:
+        disktype: MEM
+      containers:
+        - name: rclone
+          securityContext:
+            privileged: true
+          image: rclone/rclone:v1.72-stable
+          command:
+            - "rclone"
+            - "mount"
+            - "-v"
+            - "--allow-non-empty"
+            - "--allow-other"
+            - "--read-only"
+            - "--vfs-cache-max-age=1h"  #lets keep it 1hour, will tune accordingly
+            - "--vfs-read-chunk-size=8M"
+            - "--vfs-read-chunk-size-limit=64M"
+            - "--buffer-size=128M"
+            - "--dir-cache-time=1m" #default is 5minutes which seems too long.
+            - "--no-checksum"
+            - "--vfs-cache-mode=full"
+            - "--vfs-cache-max-size=2G"
+            - "blobencrypted:/ODATA/w2-output/"
+            - "/mnt/data"
+          volumeMounts:
+            - mountPath: "/config/rclone/rclone.conf"
+              name: "secret-config"
+              subPath: "rclone.conf"
+            - mountPath: /mnt/data
+              name: mzdata
+              mountPropagation: Bidirectional # this is important to make rclone mount visible in other containers (plex)
+        - name: deno
+          image: denoland/deno:2.6.0
+          command:
+            - "deno"
+            - "run"
+            - "--allow-all"
+            - "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/api/worker.ts"
+          volumeMounts:
+            - mountPath: /data
+              name: mzdata
+              readOnly: true
+              mountPropagation: HostToContainer
+
+
