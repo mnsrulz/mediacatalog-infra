@@ -84,3 +84,9 @@ ufw status
 ## configure blob storage secrets
 kubectl delete secret blob-rclone-conf
 kubectl create secret generic blob-rclone-conf --from-file=rclone.conf
+
+## immich config
+```
+kubectl create configmap postgres-config --from-literal=DB_PATH='/home/immichdb'
+kubectl create secret generic postgres-secret --from-literal=POSTGRES_PASSWORD=''
+```
