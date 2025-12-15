@@ -53,3 +53,10 @@ spec:
                 name: plex-service
                 port:
                   number: 32400
+          - path: /copyparty
+            pathType: Prefix
+            backend:
+              service:
+                name: copyparty
+                port:
+                  number: 80        
