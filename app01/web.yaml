@@ -89,7 +89,7 @@ spec:
                   key: JWT_SECRET
             - name: IMMICH_MEDIA_LOCATION
               value: "/mnt/data"
-            - name: REDIS_HOST
+            - name: REDIS_HOSTNAME
               value: "immichredis"       # Kubernetes Service name for Redis
             - name: REDIS_PORT
               value: "6379"
