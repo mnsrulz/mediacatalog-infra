@@ -51,7 +51,7 @@ spec:
             - "--buffer-size=128M"
             - "--dir-cache-time=1m"
             - "--no-checksum"
-            - "blobencrypted:/ODATA/w2-output/"
+            - "blobencrypted:/IDATA/media/"
             - "/mnt/data"
           volumeMounts:
             - mountPath: "/config/rclone/rclone.conf"
