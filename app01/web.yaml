@@ -87,7 +87,7 @@ spec:
                 secretKeyRef:
                   name: immich-secret
                   key: JWT_SECRET
-            - name: STORAGE_PATH
+            - name: UPLOAD_LOCATION
               value: "/mnt/data"
             - name: REDIS_HOST
               value: "redis"       # Kubernetes Service name for Redis
