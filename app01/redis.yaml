@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: immich_redis
+  name: immichredis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: immich_redis
+      app: immichredis
   template:
     metadata:
       labels:
-        app: immich_redis
+        app: immichredis
     spec:
       nodeSelector:
         disktype: MEM
       containers:
-        - name: immich_redis
+        - name: immichredis
           image: valkey/valkey:9-alpine
           ports:
             - containerPort: 6379
@@ -23,9 +23,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: immich_redis
+  name: immichredis
 spec:
   ports:
     - port: 6379
   selector:
-    app: immich_redis
+    app: immichredis

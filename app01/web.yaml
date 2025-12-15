@@ -90,7 +90,7 @@ spec:
             - name: IMMICH_MEDIA_LOCATION
               value: "/mnt/data"
             - name: REDIS_HOST
-              value: "immich_redis"       # Kubernetes Service name for Redis
+              value: "immichredis"       # Kubernetes Service name for Redis
             - name: REDIS_PORT
               value: "6379"
           volumeMounts:
