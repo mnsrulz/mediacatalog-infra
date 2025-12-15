@@ -44,12 +44,13 @@ spec:
         fsGroup: 1000
       volumes:
         - name: copypartydatadir
-          emptyDir:
-            medium: Memory
-            sizeLimit: 4Gi   # optional limit
+          hostPath:
+            path: /mnt/copyparty
         - name: config-volume
           configMap:
             name: copyparty-config
+      nodeSelector:
+        disktype: SSD
       containers:
         - name: copyparty
           image: ghcr.io/9001/copyparty-ac:1.19.20
