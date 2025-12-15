@@ -89,4 +89,5 @@ kubectl create secret generic blob-rclone-conf --from-file=rclone.conf
 ```
 kubectl create configmap postgres-config --from-literal=DB_PATH='/home/immichdb'
 kubectl create secret generic postgres-secret --from-literal=POSTGRES_PASSWORD=''
+kubectl create secret generic immich-secret --from-literal=JWT_SECRET=''
 ```
