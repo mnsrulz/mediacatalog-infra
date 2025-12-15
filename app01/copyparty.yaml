@@ -10,7 +10,7 @@ data:
     [/]     # this URL will be mapped to...
       /w    # ...this folder on the server filesystem
       accs:
-        rw: *
+        rwmd: *
 
 ---
 apiVersion: v1
