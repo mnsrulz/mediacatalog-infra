@@ -1,35 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
+  name: immich_redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: immich_redis
   template:
     metadata:
       labels:
-        app: redis
+        app: immich_redis
     spec:
       nodeSelector:
         disktype: MEM
       containers:
-        - name: redis
-          image: redis:7.2-alpine
+        - name: immich_redis
+          image: docker.io/valkey/valkey:9
           ports:
             - containerPort: 6379
-          resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis
+  name: immich_redis
 spec:
   ports:
     - port: 6379
   selector:
-    app: redis
+    app: immich_redis
