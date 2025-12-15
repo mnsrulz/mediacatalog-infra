@@ -40,6 +40,8 @@ spec:
       labels:
         app: copyparty
     spec:
+      securityContext:
+        fsGroup: 1000
       volumes:
         - name: copypartydatadir
           emptyDir:
