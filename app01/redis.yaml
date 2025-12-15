@@ -16,7 +16,7 @@ spec:
         disktype: MEM
       containers:
         - name: immich_redis
-          image: docker.io/valkey/valkey:9
+          image: valkey/valkey:9-alpine
           ports:
             - containerPort: 6379
 ---
