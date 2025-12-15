@@ -41,7 +41,7 @@ spec:
         disktype: SSD
       containers:
         - name: postgres
-          image: postgres:16
+          image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
           ports:
             - containerPort: 5432
           env:

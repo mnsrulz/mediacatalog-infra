@@ -1,0 +1,99 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich
+spec:
+  ports:
+    - name: immichport
+      port: 2283
+      targetPort: 2283
+  selector:
+    app: immich
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: immich
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: immich
+  template:
+    metadata:
+      labels:
+        app: immich
+    spec:
+      volumes:
+        - name: rclone-config
+          secret:
+            secretName: blob-rclone-conf
+        - name: immich-data
+          emptyDir: {}
+      nodeSelector:
+        disktype: MEM
+      containers:
+        - name: rclone
+          securityContext:
+            privileged: true
+          image: rclone/rclone:v1.72-stable
+          command:
+            - "rclone"
+            - "mount"
+            - "-v"
+            - "--allow-non-empty"
+            - "--allow-other"
+            - "--vfs-cache-mode=full"
+            - "--vfs-cache-max-age=1h"
+            - "--vfs-read-chunk-size=8M"
+            - "--vfs-read-chunk-size-limit=64M"
+            - "--buffer-size=128M"
+            - "--dir-cache-time=1m"
+            - "--no-checksum"
+            - "blobencrypted:/ODATA/w2-output/"
+            - "/mnt/data"
+          volumeMounts:
+            - mountPath: "/config/rclone/rclone.conf"
+              name: rclone-config
+              subPath: rclone.conf
+            - mountPath: /mnt/data
+              name: immich-data
+              mountPropagation: Bidirectional
+        - name: immich
+          image: ghcr.io/immich-app/immich-server:v2.3.1 
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 2283
+          env:
+            - name: IMMICH_PORT
+              value: "2283"
+            - name: DB_HOSTNAME
+              value: "postgres"   # Kubernetes Service name for Postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE_NAME
+              value: "immich"
+            - name: DB_USERNAME
+              value: "immich"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: immich-secret
+                  key: JWT_SECRET
+            - name: STORAGE_PATH
+              value: "/mnt/data"
+            - name: REDIS_HOST
+              value: "redis"       # Kubernetes Service name for Redis
+            - name: REDIS_PORT
+              value: "6379"
+          volumeMounts:
+            - name: immich-data
+              mountPath: /mnt/data
+              mountPropagation: Bidirectional
