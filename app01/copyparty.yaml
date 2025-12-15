@@ -42,9 +42,9 @@ spec:
     spec:
       volumes:
         - name: copypartydatadir
-          hostPath:
-            path: /mnt/copyparty
-            type: DirectoryOrCreate
+          emptyDir:
+            medium: Memory
+            sizeLimit: 4Gi   # optional limit
         - name: config-volume
           configMap:
             name: copyparty-config
