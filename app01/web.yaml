@@ -41,6 +41,11 @@ spec:
         - name: rclone
           securityContext:
             privileged: true
+          resources:
+            requests:
+              memory: "300Mi"
+            limits:
+              memory: "2000Mi"
           image: rclone/rclone:v1.72-stable
           command:
             - "rclone"
@@ -50,7 +55,8 @@ spec:
             - "--allow-other"
             - "--vfs-cache-mode=writes"
             - "--cache-dir=/mnt/cache"
-            - "--vfs-cache-max-size=5G"
+            - "--vfs-cache-max-size=4G"
+            - "--vfs-cache-min-free-space=2G"
             - "--vfs-cache-max-age=30m"
             - "--vfs-read-chunk-size=8M"
             - "--vfs-read-chunk-size-limit=64M"
@@ -72,6 +78,11 @@ spec:
           image: ghcr.io/immich-app/immich-server:v2.3.1 
           securityContext:
             privileged: true
+          resources:
+            requests:
+              memory: "300Mi"
+            limits:
+              memory: "900Mi"
           ports:
             - containerPort: 2283
           env:

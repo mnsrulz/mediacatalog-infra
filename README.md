@@ -43,7 +43,6 @@ http://192.168.0.30:32400, http://192.168.0.30
 ```
 
 ```
-
 kubectl -n kube-system patch deployment traefik \
   --type='json' \
   -p='[{"op": "add", "path": "/spec/template/spec/nodeSelector", "value":{"disktype":"SSD"}}]'
@@ -51,6 +50,22 @@ kubectl -n kube-system patch deployment traefik \
 kubectl -n kube-system patch deployment traefik \
   --type='json' \
   -p='[{"op": "replace", "path": "/spec/template/spec/nodeSelector", "value":{"disktype":"SSD"}}]'
+
+-- probably need to set as add first and then replace
+kubectl -n argo patch deployment argo-server \
+  --type='json' \
+  -p='[{"op":"replace","path":"/spec/template/spec/containers/0/env","value":[{"name":"ARGO_BASE_HREF","value":"argo"}, {"name":"ARGO_SECURE","value":"false"}]}]'
+
+kubectl -n argo patch deployment argo-server \
+  --type='json' \
+  -p='[{"op":"replace","path":"/spec/template/spec/containers/0/readinessProbe/httpGet/scheme","value":"HTTP"}]'
+
+```
+
+## to setup the argo flow
+```
+kubectl create namespace argo
+kubectl apply -n argo -f "https://github.com/argoproj/argo-workflows/releases/download/v3.7.6/quick-start-minimal.yaml"
 ```
 
 ## to add the agent
