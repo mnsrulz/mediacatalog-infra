@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mzdata-daily-sync
+spec:
+  schedule: "0 14 * * *"       # 14:00 UTC = 9:00 AM EST
+  concurrencyPolicy: Forbid     # prevent overlap if job runs long
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          volumes:
+            - name: rclone-config
+              secret:
+                secretName: blob-rclone-conf
+          containers:
+          - name: mount-rclone
+            securityContext:
+              privileged: true
+            image: python:3.14-slim
+            env:
+              - name: DATA_DIR
+                value: "/mnt/mzdata"
+              - name: TEMP_DIR
+                value: "/tmp/work"
+            command: ["sh", "-c"]
+            args:
+              - |
+                set -e
+                mkdir /mnt/mzdata
+                mkdir /tmp/work
+                
+                ## SETTING UP DEPENDENCIES
+                apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
+                python3 -m venv /opt/venv                
+                /opt/venv/bin/pip install --no-cache-dir duckdb                
+                
+                ## STEP1
+                echo "Syncing the data from git to storage"
+                rclone copy mzstorage: blobencrypted:/ODATA/w2/ --progress -v  --config /config/rclone/rclone.conf
+                echo "Syncing finished to storage"
+
+                rclone mount --config /config/rclone/rclone.conf blobencrypted:/ODATA /mnt/mzdata --read-only \
+                  --allow-non-empty --allow-other -v &
+                RCLONE_PID=$!
+
+                sleep 5
+                ls -l /mnt/mzdata
+                
+                curl -L -o /tmp/job.py "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/jobs/main-options-data-consolidate.py"
+
+                echo "script downloaded now executing after 5 seconds"
+                sleep 5
+                /opt/venv/bin/python -u /tmp/job.py
+
+                echo "Syncing the work back to storage"
+                rclone copy /tmp/work blobencrypted:/ODATA/ --progress -v  --config /config/rclone/rclone.conf
+                echo "Processing done!"
+            volumeMounts:
+              - mountPath: "/config/rclone/rclone.conf"
+                name: rclone-config
+                subPath: rclone.conf
