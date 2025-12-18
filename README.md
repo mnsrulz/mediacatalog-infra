@@ -100,6 +100,9 @@ ufw status
 ```
 kubectl delete secret blob-rclone-conf
 kubectl create secret generic blob-rclone-conf --from-file=rclone.conf
+
+# To read the secret back
+kubectl get secret blob-rclone-conf -o jsonpath="{.data.rclone\.conf}" | base64 --decode
 ```
 
 ## immich config
