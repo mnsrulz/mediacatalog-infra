@@ -18,6 +18,10 @@ spec:
             secretName: blob-rclone-conf
         - name: mzdata
           emptyDir: {}
+        - name: rclone-cache
+          hostPath:
+            path: /tmp/rclone-mzworker-cache
+            type: DirectoryOrCreate
       nodeSelector:
         disktype: MEM
       containers:
@@ -32,13 +36,13 @@ spec:
             - "--allow-non-empty"
             - "--allow-other"
             - "--read-only"
-            - "--vfs-cache-max-age=1h"  #lets keep it 1hour, will tune accordingly
+            - "--vfs-cache-max-age=24h"  #lets keep it 1hour, will tune accordingly
             - "--vfs-read-chunk-size=8M"
-            - "--vfs-read-chunk-size-limit=64M"
-            - "--buffer-size=128M"
-            - "--dir-cache-time=1m" #default is 5minutes which seems too long.
-            - "--no-checksum"
+            - "--vfs-read-chunk-size-limit=32M"
             - "--vfs-cache-mode=full"
+            - "--buffer-size=1M"
+            - "--no-checksum"
+            - "--cache-dir=/mnt/cache"
             - "--vfs-cache-max-size=2G"
             - "blobencrypted:/ODATA/w2-output/"
             - "/mnt/data"
@@ -49,6 +53,8 @@ spec:
             - mountPath: /mnt/data
               name: mzdata
               mountPropagation: Bidirectional # this is important to make rclone mount visible in other containers (plex)
+            - mountPath: /mnt/cache
+              name: rclone-cache
         - name: deno
           image: denoland/deno:2.6.0
           command:

@@ -33,7 +33,7 @@ spec:
           emptyDir: {}
         - name: rclone-cache
           hostPath:
-            path: /mnt/rclone-cache
+            path: /tmp/rclone-immich-cache
             type: DirectoryOrCreate
       nodeSelector:
         disktype: MEM
@@ -57,11 +57,10 @@ spec:
             - "--cache-dir=/mnt/cache"
             - "--vfs-cache-max-size=4G"
             - "--vfs-cache-min-free-space=2G"
-            - "--vfs-cache-max-age=30m"
-            - "--vfs-read-chunk-size=8M"
-            - "--vfs-read-chunk-size-limit=64M"
-            - "--buffer-size=8M"
-            - "--dir-cache-time=1m"
+            - "--vfs-read-chunk-size=4M"
+            - "--vfs-read-chunk-size-limit=16M"
+            - "--buffer-size=1M"
+            - "--dir-cache-time=48h" #all ops being done by this mount, so high cache time doesn't have any downfall
             - "--no-checksum"
             - "blobencrypted:/IDATA/media/"
             - "/mnt/data"
