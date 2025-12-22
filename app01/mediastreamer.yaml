@@ -48,7 +48,7 @@ spec:
             - name: NODE_TLS_REJECT_UNAUTHORIZED
               value: "0"
             - name: MAX_BUFFER_SIZE_MB
-              value: "1024"
+              value: "512"
             - name: ROOT_PATH
               value: "/streamer"
 
