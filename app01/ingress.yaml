@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: madhu-lenovo-14w
+    - host: immich.local
       http:
         paths:
           - path: /

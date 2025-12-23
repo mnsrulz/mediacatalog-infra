@@ -30,6 +30,8 @@ spec:
         - name: staticdirectory
           hostPath:
             path: /home/madhu/live 
+      nodeSelector:
+        disktype: SSD
       containers:
         - name: staticserver
           image: joseluisq/static-web-server:2
