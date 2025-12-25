@@ -16,6 +16,16 @@ spec:
                 name: immich
                 port:
                   number: 2283
+    - host: n8n.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: n8n-service
+                port:
+                  number: 5678
     - http:
         paths:
           - path: /streamer

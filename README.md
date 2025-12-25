@@ -54,7 +54,7 @@ kubectl -n kube-system patch deployment traefik \
 -- probably need to set as add first and then replace
 kubectl -n argo patch deployment argo-server \
   --type='json' \
-  -p='[{"op":"replace","path":"/spec/template/spec/containers/0/env","value":[{"name":"ARGO_BASE_HREF","value":"argo"}, {"name":"ARGO_SECURE","value":"false"}]}]'
+  -p='[{"op":"replace","path":"/spec/template/spec/containers/0/env","value":[{"name":"ARGO_BASE_HREF","value":""}, {"name":"ARGO_SECURE","value":"false"}]}]'
 
 kubectl -n argo patch deployment argo-server \
   --type='json' \
