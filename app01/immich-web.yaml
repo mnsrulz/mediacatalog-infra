@@ -29,8 +29,8 @@ spec:
         - name: rclone-config
           secret:
             secretName: blob-rclone-conf
-        - name: immich-data
-          emptyDir: {}
+     #   - name: immich-data
+     #     emptyDir: {}
         - name: rclone-cache
           hostPath:
             path: /tmp/rclone-immich-cache
@@ -38,7 +38,52 @@ spec:
       nodeSelector:
         disktype: MEM
       containers:
-        - name: rclone
+        # - name: rclone
+        #   securityContext:
+        #     privileged: true
+        #   resources:
+        #     requests:
+        #       memory: "300Mi"
+        #     limits:
+        #       memory: "2000Mi"
+        #   image: rclone/rclone:v1.72-stable
+        #   command:
+        #     - "rclone"
+        #     - "mount"
+        #     - "-v"
+        #     - "--allow-non-empty"
+        #     - "--allow-other"
+        #     - "--vfs-cache-max-age=72h"
+        #     - "--vfs-cache-mode=full"
+        #     - "--cache-dir=/mnt/cache"
+        #     - "--vfs-cache-max-size=4G"
+        #     - "--vfs-cache-min-free-space=2G"
+        #     - "--vfs-read-chunk-size=4M"
+        #     - "--vfs-read-chunk-size-limit=16M"
+        #     - "--buffer-size=1M"
+        #     - "--dir-cache-time=72h" #all ops being done by this mount, so high cache time doesn't have any downfall
+        #     - "--no-checksum"
+        #     - "blobencrypted:/IDATA/media/"
+        #     - "/mnt/data"
+        #   volumeMounts:
+        #     - mountPath: "/config/rclone/rclone.conf"
+        #       name: rclone-config
+        #       subPath: rclone.conf
+        #     - mountPath: /mnt/data
+        #       name: immich-data
+        #       mountPropagation: Bidirectional
+        #     - mountPath: /mnt/cache
+        #       name: rclone-cache
+        - name: immich
+          image: ghcr.io/mnsrulz/immich-rclone:latest ## custom image with rclone and immich-server combined
+          # image: ghcr.io/immich-app/immich-server:v2.3.1 
+          args: ## NEED TO MOUNT RCLONE FIRST in minimal cache mode (to avoid MEMORY issues) AND THEN START IMMICH SERVER
+          - |
+            echo "Mounting and starting Immich Server..."
+            rclone mount -v --allow-non-empty --allow-other \
+              --dir-cache-time=72h --vfs-cache-max-age=72h --vfs-cache-mode=minimal --cache-dir=/mnt/cache --vfs-cache-max-size=4G --vfs-cache-min-free-space=2G \
+              --vfs-read-chunk-size=4M --vfs-read-chunk-size-limit=16M --buffer-size=1M --no-checksum --config /config/rclone/rclone.conf \
+              blobencrypted:/IDATA/media/ /data & start.sh
           securityContext:
             privileged: true
           resources:
@@ -46,43 +91,6 @@ spec:
               memory: "300Mi"
             limits:
               memory: "2000Mi"
-          image: rclone/rclone:v1.72-stable
-          command:
-            - "rclone"
-            - "mount"
-            - "-v"
-            - "--allow-non-empty"
-            - "--allow-other"
-            - "--vfs-cache-max-age=72h"
-            - "--vfs-cache-mode=full"
-            - "--cache-dir=/mnt/cache"
-            - "--vfs-cache-max-size=4G"
-            - "--vfs-cache-min-free-space=2G"
-            - "--vfs-read-chunk-size=4M"
-            - "--vfs-read-chunk-size-limit=16M"
-            - "--buffer-size=1M"
-            - "--dir-cache-time=72h" #all ops being done by this mount, so high cache time doesn't have any downfall
-            - "--no-checksum"
-            - "blobencrypted:/IDATA/media/"
-            - "/mnt/data"
-          volumeMounts:
-            - mountPath: "/config/rclone/rclone.conf"
-              name: rclone-config
-              subPath: rclone.conf
-            - mountPath: /mnt/data
-              name: immich-data
-              mountPropagation: Bidirectional
-            - mountPath: /mnt/cache
-              name: rclone-cache
-        - name: immich
-          image: ghcr.io/immich-app/immich-server:v2.3.1 
-          securityContext:
-            privileged: true
-          resources:
-            requests:
-              memory: "300Mi"
-            limits:
-              memory: "900Mi"
           ports:
             - containerPort: 2283
           env:
@@ -107,12 +115,17 @@ spec:
                   name: immich-secret
                   key: JWT_SECRET
             - name: IMMICH_MEDIA_LOCATION
-              value: "/mnt/data"
+              value: "/data"
             - name: REDIS_HOSTNAME
               value: "immichredis"       # Kubernetes Service name for Redis
             - name: REDIS_PORT
               value: "6379"
           volumeMounts:
-            - name: immich-data
-              mountPath: /mnt/data
-              mountPropagation: Bidirectional
+            # - name: immich-data
+            #   mountPath: /mnt/data
+            #   mountPropagation: Bidirectional
+            - mountPath: "/config/rclone/rclone.conf"
+              name: rclone-config
+              subPath: rclone.conf
+            - mountPath: /mnt/cache
+              name: rclone-cache
