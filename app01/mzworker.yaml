@@ -35,9 +35,9 @@ spec:
             - sh
             - -c
             - |
-              mkdir -p /config
-              cp /secret/rclone.conf /config/rclone.conf
-              chmod 600 /config/rclone.conf
+              mkdir -p /config/rclone
+              cp /secret/rclone.conf /config/rclone/rclone.conf
+              chmod 600 /config/rclone/rclone.conf
           volumeMounts:
             - name: secret-config
               mountPath: /secret
