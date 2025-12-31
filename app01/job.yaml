@@ -58,7 +58,9 @@ spec:
 
                 echo "Syncing the work back to storage"
                 rclone copy /tmp/work blobencrypted:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
-                echo "Processing done!"
+                echo "Copying to blob done! Now copying to gdrive"
+                rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                echo "Copying to gdrive done! Processing done!"
             volumeMounts:
               - mountPath: "/config/rclone/rclone.conf"
                 name: rclone-config
