@@ -16,6 +16,9 @@ spec:
         - name: secret-config
           secret:
             secretName: blob-rclone-conf
+          # Writable copy of rclone config
+        - name: rclone-config-writable
+          emptyDir: {}
         - name: mzdata
           emptyDir: {}
         - name: rclone-cache
@@ -24,7 +27,24 @@ spec:
             type: DirectoryOrCreate
       nodeSelector:
         disktype: MEM
-      containers:
+      # Init container copies secret → writable volume
+      initContainers:
+        - name: init-rclone-config
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /config
+              cp /secret/rclone.conf /config/rclone.conf
+              chmod 600 /config/rclone.conf
+          volumeMounts:
+            - name: secret-config
+              mountPath: /secret
+              readOnly: true
+            - name: rclone-config-writable
+              mountPath: /config
+      containers: 
         - name: rclone
           securityContext:
             privileged: true
@@ -44,12 +64,11 @@ spec:
             - "--no-checksum"
             - "--cache-dir=/mnt/cache"
             - "--vfs-cache-max-size=1G"
-            - "blobencrypted:/ODATA/w2-output/"
+            - "gdrive:/ODATA/w2-output/"
             - "/mnt/data"
           volumeMounts:
-            - mountPath: "/config/rclone/rclone.conf"
-              name: "secret-config"
-              subPath: "rclone.conf"
+            - name: rclone-config-writable
+              mountPath: /config
             - mountPath: /mnt/data
               name: mzdata
               mountPropagation: Bidirectional # this is important to make rclone mount visible in other containers (plex)
