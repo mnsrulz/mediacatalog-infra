@@ -40,7 +40,8 @@ spec:
                 
                 ## STEP1
                 echo "Syncing the data from git to storage"
-                rclone copy mzstorage: blobencrypted:/ODATA/w2/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy mzstorage:/files blobencrypted:/ODATA/w2/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy mzstorage:/ohlc blobencrypted:/ODATA/ohlc-raw/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Syncing finished to storage"
 
                 rclone mount --config /config/rclone/rclone.conf blobencrypted:/ODATA /mnt/mzdata --read-only \

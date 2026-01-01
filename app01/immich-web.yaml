@@ -35,6 +35,9 @@ spec:
           hostPath:
             path: /tmp/rclone-immich-cache
             type: DirectoryOrCreate
+        - name: media
+          hostPath:
+            path: /media
       nodeSelector:
         disktype: MEM
       containers:
@@ -129,3 +132,6 @@ spec:
               subPath: rclone.conf
             - mountPath: /mnt/cache
               name: rclone-cache
+            - mountPath: /mnt/media
+              name: media
+              readOnly: true

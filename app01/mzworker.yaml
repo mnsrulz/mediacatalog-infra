@@ -54,8 +54,9 @@ spec:
             - "mount"
             - "-v"
             - "--allow-non-empty"
-            - "--allow-other"
             - "--read-only"
+            # - '--bind=0.0.0.0' ## ONLY needed for gdrive to speed up downloads
+            - "--dir-cache-time=1h"
             - "--vfs-cache-max-age=72h"
             - "--vfs-read-chunk-size=4M"
             - "--vfs-read-chunk-size-limit=16M"
@@ -64,7 +65,7 @@ spec:
             - "--no-checksum"
             - "--cache-dir=/mnt/cache"
             - "--vfs-cache-max-size=1G"
-            - "gdrive:/ODATA/w2-output/"
+            - "blobencrypted:/ODATA/w2-output/"
             - "/mnt/data"
           volumeMounts:
             - name: rclone-config-writable
