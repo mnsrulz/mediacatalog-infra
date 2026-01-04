@@ -65,7 +65,7 @@ spec:
             - "--no-checksum"
             - "--cache-dir=/mnt/cache"
             - "--vfs-cache-max-size=1G"
-            - "blobencrypted:/ODATA/"
+            - "blobmzodata:"
             - "/mnt/data"
           volumeMounts:
             - name: rclone-config-writable
@@ -79,7 +79,7 @@ spec:
           image: denoland/deno:2.6.0
           env:
             - name: DATA_DIR
-              value: "/data/w2-output"
+              value: "/data/options_data"
             - name: OHLC_DIR
               value: "/data/ohlc" 
           command:
