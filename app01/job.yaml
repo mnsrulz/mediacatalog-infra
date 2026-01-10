@@ -6,7 +6,7 @@ spec:
   schedule: "0 9 * * *"       # 9:00 AM EST 
   concurrencyPolicy: Forbid     # prevent overlap if job runs long
   successfulJobsHistoryLimit: 3
-  failedJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
@@ -44,7 +44,7 @@ spec:
                 rclone copy mzstorage:/ohlc blobencrypted:/ODATA/ohlc-raw/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Syncing finished to storage"
 
-                ### TODO: SKIP MOUNTING THE ENTIRE DRIVE ###
+                ### TODO SKIP MOUNTING THE ENTIRE DRIVE ###
                 rclone mount --config /config/rclone/rclone.conf blobencrypted:/ODATA /mnt/mzdata --read-only \
                   --allow-non-empty --allow-other -v &
                 RCLONE_PID=$!
@@ -58,15 +58,13 @@ spec:
                 sleep 5
                 /opt/venv/bin/python -u /tmp/job.py
 
-                ## TODO: COPY ONLY THE NEEDED DATA
+                ## TODO COPY ONLY THE NEEDED DATA
                 echo "Syncing the work back to storage"
                 rclone copy /tmp/work blobencrypted:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to blob done! Now copying to gdrive"
                 rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to gdrive done! Now copying to seaweed s3"	
- 	
                 rclone copy /tmp/work seaweed:/odata/ --progress -v	--fast-list --config /config/rclone/rclone.conf	
-
                 echo "Copying to seaweed s3 done! Processing done!"
             volumeMounts:
               - mountPath: "/config/rclone/rclone.conf"
