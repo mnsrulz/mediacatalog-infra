@@ -26,6 +26,16 @@ spec:
                 name: n8n-service
                 port:
                   number: 5678
+    - host: s3.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: seaweedfs
+                port:
+                  number: 8333
     - http:
         paths:
           - path: /streamer

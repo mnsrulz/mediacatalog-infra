@@ -61,7 +61,7 @@ spec:
         - name: rclone
           securityContext:
             privileged: true
-          image: rclone/rclone
+          image: rclone/rclone:v1.72-stable
           command:
             - "rclone"
             - "mount"
@@ -81,7 +81,7 @@ spec:
               name: plexmedia
               mountPropagation: Bidirectional # this is important to make rclone mount visible in other containers (plex)
         - name: plex
-          image: linuxserver/plex
+          image: linuxserver/plex:1.42.1
 #          imagePullPolicy: Always
           volumeMounts:
             - mountPath: /config

@@ -111,3 +111,8 @@ kubectl create configmap postgres-config --from-literal=DB_PATH='/home/immichdb'
 kubectl create secret generic postgres-secret --from-literal=POSTGRES_PASSWORD=''
 kubectl create secret generic immich-secret --from-literal=JWT_SECRET=''
 ```
+
+## seaweed config
+```
+kubectl create secret generic seaweed-secret --from-literal=SEAWEED_ACCESS_KEY_ID='' --from-literal=SEAWEED_ACCESS_KEY=''
+```
