@@ -36,6 +36,16 @@ spec:
                 name: seaweedfs
                 port:
                   number: 8333
+    - host: plex.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: plex-service
+                port:
+                  number: 32400
     - http:
         paths:
           - path: /streamer
