@@ -72,12 +72,12 @@ spec:
             - "--vfs-read-chunk-size=1M"
             - "--vfs-read-chunk-size-limit=8M"
             - "--dir-cache-time=5s" #default is 5minutes which seems too long.
-            - "AllDrives:/"
-            - "/mnt/data"
+            - "mediacatalogcachenetlify:"
+            - "/mnt/data/plex"
           volumeMounts:
             - mountPath: /config/rclone
               name: rcloneconfig
-            - mountPath: /mnt/data
+            - mountPath: /mnt/data/plex
               name: plexmedia
               mountPropagation: Bidirectional # this is important to make rclone mount visible in other containers (plex)
         - name: plex
