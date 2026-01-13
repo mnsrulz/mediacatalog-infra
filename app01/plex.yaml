@@ -42,7 +42,7 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: plexconfig
-            - mountPath: "/config/rclone/rclone.conf"
+            - mountPath: "/rcloneconfig/rclone.conf"
               name: rclone-config
               subPath: rclone.conf
           ports:
