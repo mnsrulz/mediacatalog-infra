@@ -10,19 +10,6 @@ spec:
   selector:
     app: plex
 
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#  name: jellyfin-service
-# spec:
-#  ports:
-#    - port: 8096
-#      targetPort: 8096
-#  selector:
-#    app: plex
-
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,60 +25,26 @@ spec:
         app: plex
     spec:
       volumes:
-        - name: mediadownloads # custom download directory
-          hostPath:
-            path: /home/madhu/Downloads
         - name: plexconfig # plex configuration data like library metadata 
           hostPath:
             path: /home/madhu/plexconfig
-        - name: jellyfinconfig # plex configuration data like library metadata 
-          hostPath:
-            path: /home/madhu/jellyfinconfig
-        - name: jellyfincache # plex configuration data like library metadata 
-          hostPath:
-            path: /home/madhu/jellyfincache
-        - name: rcloneconfig # rclone config file directory
-          hostPath:
-            path: /home/madhu/.config/rclone
-        - name: plexmedia
-          emptyDir: {}
+        - name: rclone-config
+          secret:
+            secretName: blob-rclone-conf
       nodeSelector:
         disktype: SSD
       containers:
-        - name: rclone
+        - name: plex
           securityContext:
             privileged: true
-          image: rclone/rclone:v1.72-stable
-          command:
-            - "rclone"
-            - "mount"
-            - "-v"
-            - "--allow-non-empty"
-            - "--allow-other"
-            - "--read-only"
-            - "--vfs-read-chunk-size=1M"
-            - "--vfs-read-chunk-size-limit=8M"
-            - "--dir-cache-time=5s" #default is 5minutes which seems too long.
-            - "mediacatalogcachenetlify:"
-            - "/mnt/data/plex"
-          volumeMounts:
-            - mountPath: /config/rclone
-              name: rcloneconfig
-            - mountPath: /mnt/data/plex
-              name: plexmedia
-              mountPropagation: Bidirectional # this is important to make rclone mount visible in other containers (plex)
-        - name: plex
-          image: linuxserver/plex:1.42.1
-#          imagePullPolicy: Always
+          image: ghcr.io/mnsrulz/plex-rclone:latest
+          imagePullPolicy: Always
           volumeMounts:
             - mountPath: /config
               name: plexconfig
-            - mountPath: /mediadownloads
-              name: mediadownloads
-            - mountPath: /media
-              name: plexmedia
-              readOnly: true
-              mountPropagation: HostToContainer
+            - mountPath: "/config/rclone/rclone.conf"
+              name: rclone-config
+              subPath: rclone.conf
           ports:
             - containerPort: 32400
           env:
@@ -105,28 +58,3 @@ spec:
               value: "Etc/UTC"
             - name: VERSION
               value: "docker"
-        # - name: jellyfin
-        #   image: lscr.io/linuxserver/jellyfin:latest
-        # #  imagePullPolicy: IfNotPresent
-        #   volumeMounts:
-        #     - mountPath: /config
-        #       name: jellyfinconfig
-        #     - mountPath: /cache
-        #       name: jellyfincache
-        #     - mountPath: /media
-        #       name: plexmedia
-        #       readOnly: true
-        #       mountPropagation: HostToContainer
-        #   ports:
-        #     - containerPort: 8096
-        #   env:
-        #     - name: JELLYFIN_PublishedServerUrl
-        #       value: "192.168.0.30/jellyfin/"
-        #     - name: PUID
-        #       value: "1000"
-        #     - name: PGID 
-        #       value: "1000"
-        #   resources: # limit the resources
-        #     limits:
-        #       memory: 512Mi
-        #       cpu: 50m
