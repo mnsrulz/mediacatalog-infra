@@ -31,7 +31,6 @@ spec:
       containers:
         - name: reactiveresume
           image: ghcr.io/amruthpillai/reactive-resume:v4.5.5
-          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

@@ -121,5 +121,5 @@ kubectl create secret generic seaweed-secret --from-literal=SEAWEED_ACCESS_KEY_I
 ```
 kubectl create configmap reactiveresumepostgres-config --from-literal=DB_PATH='/home/reactiveresumedb'
 
-kubectl create secret generic reactiveresume-secrets --from-literal=POSTGRES_PASSWORD='' --from-literal=DATABASE_URL='postgresql://reactiveresume:@reactiveresumepostgres:5432/reactiveresume'
+kubectl create secret generic reactiveresume-secrets --from-literal=POSTGRES_PASSWORD='' --from-literal=DATABASE_URL='postgresql://reactiveresume:@reactiveresumepostgres:5432/reactiveresume' --from-literal=AUTH_SECRET=''
 ```
