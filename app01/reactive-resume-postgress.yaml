@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reactiveresumepostgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reactiveresumepostgres
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: reactiveresumepostgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: reactiveresumepostgres
+spec:
+  serviceName: reactiveresumepostgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reactiveresumepostgres
+  template:
+    metadata:
+      labels:
+        app: reactiveresumepostgres
+    spec:
+      nodeSelector:
+        disktype: SSD
+      containers:
+        - name: reactiveresumepostgres
+          image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: reactiveresume
+            - name: POSTGRES_USER
+              value: reactiveresume
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: reactiveresume-secrets
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+      initContainers:
+        - name: init-path
+          image: busybox
+          command: ["sh", "-c", "ln -s $DB_PATH /var/lib/postgresql/data || true"]
+          envFrom:
+            - configMapRef:
+                name: reactiveresumepostgres-config
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: reactiveresumepostgres-pvc

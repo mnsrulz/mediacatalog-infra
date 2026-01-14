@@ -116,3 +116,8 @@ kubectl create secret generic immich-secret --from-literal=JWT_SECRET=''
 ```
 kubectl create secret generic seaweed-secret --from-literal=SEAWEED_ACCESS_KEY_ID='' --from-literal=SEAWEED_ACCESS_KEY=''
 ```
+
+## reactive resume config
+```
+kubectl create secret generic reactiveresume-secrets --from-literal=POSTGRES_PASSWORD='' --from-literal=DATABASE_URL='postgresql://reactiveresume:@reactiveresumepostgres:5432/reactiveresume'
+```
