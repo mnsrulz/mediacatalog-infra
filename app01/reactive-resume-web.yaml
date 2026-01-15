@@ -58,6 +58,8 @@ spec:
           env:
             - name: APP_URL
               value: http://resume.local
+            - name: PUBLIC_URL
+              value: http://resume.local
             - name: STORAGE_DRIVER
               value: s3
             - name: DATABASE_URL
@@ -65,7 +67,12 @@ spec:
                 secretKeyRef:
                   name: reactiveresume-secrets
                   key: DATABASE_URL
-            - name: AUTH_SECRET
+            - name: ACCESS_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: reactiveresume-secrets
+                  key: AUTH_SECRET
+            - name: REFRESH_TOKEN_SECRET
               valueFrom:
                 secretKeyRef:
                   name: reactiveresume-secrets
@@ -77,20 +84,24 @@ spec:
                 secretKeyRef:
                   name: reactiveresume-secrets
                   key: AUTH_SECRET
-            - name: S3_ENDPOINT
+            - name: STORAGE_URL
               value: http://seaweedfs:8333
+            - name: STORAGE_ENDPOINT
+              value: http://seaweedfs:8333
+            - name: STORAGE_PORT
+              value: 8333
             - name: S3_FORCE_PATH_STYLE
               value: "true"
-            - name: S3_BUCKET
+            - name: STORAGE_BUCKET
               value: reactive-resume
             - name: S3_REGION
               value: us-east-1
-            - name: S3_ACCESS_KEY_ID
+            - name: STORAGE_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: seaweed-secret
                   key: SEAWEED_ACCESS_KEY_ID
-            - name: S3_SECRET_ACCESS_KEY
+            - name: STORAGE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: seaweed-secret
