@@ -23,7 +23,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: reactiveresume
+                name: resume
                 port:
                   number: 3000
     - host: n8n.local
