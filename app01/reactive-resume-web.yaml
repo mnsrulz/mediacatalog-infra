@@ -10,17 +10,17 @@ spec:
       targetPort: resume-http
   selector:
     app: reactiveresume
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: chrome
-spec:
-  ports:
-    - port: 3000
-      targetPort: chrome-http
-  selector:
-    app: reactiveresume
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: chrome
+# spec:
+#   ports:
+#     - port: 3000
+#       targetPort: chrome-http
+#   selector:
+#     app: reactiveresume
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -39,17 +39,17 @@ spec:
       nodeSelector:
         disktype: MEM
       containers:
-        - name: chrome
-          image: browserless/chrome:latest
-          ports:
-            - name: chrome-http
-              containerPort: 3000
-          env:
-            - name: TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: reactiveresume-secrets
-                  key: AUTH_SECRET
+        # - name: chrome
+        #   image: browserless/chrome:alpine
+        #   ports:
+        #     - name: chrome-http
+        #       containerPort: 3000
+        #   env:
+        #     - name: TOKEN
+        #       valueFrom:
+        #         secretKeyRef:
+        #           name: reactiveresume-secrets
+        #           key: AUTH_SECRET
         - name: reactiveresume
           image: ghcr.io/amruthpillai/reactive-resume:v4.5.5
           ports:
