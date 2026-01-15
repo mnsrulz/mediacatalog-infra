@@ -45,6 +45,8 @@ spec:
             - name: chrome-http
               containerPort: 4000
           env:
+            - name: PORT
+              value: "4000"          # browserless listens on this port
             - name: TOKEN
               valueFrom:
                 secretKeyRef:
