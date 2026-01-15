@@ -17,7 +17,7 @@ metadata:
   name: chrome
 spec:
   ports:
-    - port: 3000
+    - port: 4000
       targetPort: chrome-http
   selector:
     app: reactiveresume
@@ -43,7 +43,7 @@ spec:
           image: browserless/chrome:1.61-chrome-stable
           ports:
             - name: chrome-http
-              containerPort: 3000
+              containerPort: 4000
           env:
             - name: TOKEN
               valueFrom:
@@ -78,7 +78,7 @@ spec:
                   name: reactiveresume-secrets
                   key: AUTH_SECRET
             - name: CHROME_URL
-              value: http://chrome:3000
+              value: http://chrome:4000
             - name: CHROME_TOKEN
               valueFrom:
                 secretKeyRef:
