@@ -85,9 +85,9 @@ spec:
                   name: reactiveresume-secrets
                   key: AUTH_SECRET
             - name: STORAGE_URL
-              value: http://seaweedfs:8333
+              value: http://seaweedfs:8333/reactive-resume
             - name: STORAGE_ENDPOINT
-              value: http://seaweedfs:8333
+              value: seaweedfs
             - name: STORAGE_PORT
               value: "8333"
             - name: S3_FORCE_PATH_STYLE
