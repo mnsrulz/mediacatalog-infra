@@ -40,7 +40,7 @@ spec:
         disktype: MEM
       containers:
         - name: chrome
-          image: browserless/chrome:alpine
+          image: browserless/chrome:1.61-chrome-stable
           ports:
             - name: chrome-http
               containerPort: 3000
