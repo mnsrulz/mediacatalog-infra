@@ -65,13 +65,6 @@ spec:
                 name: mediastreamer
                 port:
                   number: 3000
-          - path: /immich
-            pathType: Prefix
-            backend:
-              service:
-                name: immich
-                port:
-                  number: 2283
           - path: /ytapi
             pathType: Prefix
             backend:
