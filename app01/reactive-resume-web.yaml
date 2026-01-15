@@ -58,10 +58,10 @@ spec:
             - name: resume-http
               containerPort: 3000
           env:
-            - name: APP_URL
-              value: http://resume.local
+            # - name: APP_URL
+            #   value: http://resume
             - name: PUBLIC_URL
-              value: http://resume.local
+              value: http://resume:3000
             - name: STORAGE_DRIVER
               value: s3
             - name: DATABASE_URL
@@ -87,7 +87,7 @@ spec:
                   name: reactiveresume-secrets
                   key: AUTH_SECRET
             - name: STORAGE_URL
-              value: http://seaweedfs:8333/reactive-resume
+              value: http://s3.local/reactive-resume
             - name: STORAGE_ENDPOINT
               value: seaweedfs
             - name: STORAGE_PORT
