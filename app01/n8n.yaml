@@ -29,10 +29,10 @@ spec:
         - name: n8n-data
           # emptyDir: {}
           hostPath:
-            path: /tmp/n8n-data   # Change this path as needed
+            path: /mnt/n8n-data   # Change this path as needed
             type: DirectoryOrCreate
       nodeSelector:
-        disktype: MEM
+        disktype: SSD
       containers:
         - name: n8n
           image: n8nio/n8n:2.1.4

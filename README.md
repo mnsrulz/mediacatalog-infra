@@ -128,3 +128,8 @@ kubectl create secret generic reactiveresume-secrets --from-literal=POSTGRES_PAS
 ```
 mount -o remount,size=15G /var/lib/kubelet
 ```
+
+### To remove the ssh certs
+```
+ssh-keygen -R 192.168.0.60
+```
