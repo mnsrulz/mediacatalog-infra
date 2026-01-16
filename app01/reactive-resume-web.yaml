@@ -60,8 +60,8 @@ spec:
             - name: CHROME_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: chrome-secrets
-                  key: TOKEN
+                  name: reactiveresume-secrets
+                  key: AUTH_SECRET
             - name: STORAGE_URL
               value: http://s3.local/reactive-resume
             - name: STORAGE_ENDPOINT
