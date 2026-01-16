@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chrome
+spec:
+  ports:
+    - port: 4000
+      targetPort: chrome-http
+  selector:
+    app: chrome
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome
+spec:
+  selector:
+    matchLabels:
+      app: chrome
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: chrome
+    spec:
+      nodeSelector:
+        disktype: SSD
+      containers:
+        - name: chrome
+          image: browserless/chrome:1.61-chrome-stable
+          ports:
+            - name: chrome-http
+              containerPort: 4000
+          env:
+            - name: PORT
+              value: "4000"          # browserless listens on this port
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: chrome-secrets
+                  key: AUTH_SECRET
