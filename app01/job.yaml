@@ -62,9 +62,11 @@ spec:
                 echo "Syncing the work back to storage"
                 rclone copy /tmp/work blobencrypted:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to blob done! Now copying to gdrive"
-                rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy /tmp/work/w2-output-flat gdrive:/ODATA/w2-output-flat --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy /tmp/work/ohlc gdrive:/ODATA/ohlc --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to gdrive done! Now copying to seaweed s3"	
-                rclone copy /tmp/work seaweed:/odata/ --progress -v	--fast-list --config /config/rclone/rclone.conf	
+                rclone copy /tmp/work/w2-output-flat seaweed:/odata/w2-output-flat --progress -v	--fast-list --config /config/rclone/rclone.conf	
+                rclone copy /tmp/work/ohlc seaweed:/odata/ohlc --progress -v	--fast-list --config /config/rclone/rclone.conf	
                 echo "Copying to seaweed s3 done! Processing done!"
             volumeMounts:
               - mountPath: "/config/rclone/rclone.conf"
