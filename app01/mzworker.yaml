@@ -56,7 +56,7 @@ spec:
             - "--allow-non-empty"
             - "--read-only"
             # - '--bind=0.0.0.0' ## ONLY needed for gdrive to speed up downloads
-            - "--dir-cache-time=1h"
+            # - "--dir-cache-time=1h" ## NOT NEEDED AS MUCH AS POINTING TO LOCAL S3
             - "--vfs-cache-max-age=72h"
             - "--vfs-read-chunk-size=4M"
             - "--vfs-read-chunk-size-limit=16M"
