@@ -56,6 +56,16 @@ spec:
                 name: plex-service
                 port:
                   number: 32400
+    - host: duckdb.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: duckdb
+                port:
+                  number: 4213
     - http:
         paths:
           - path: /streamer
