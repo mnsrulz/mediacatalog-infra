@@ -13,84 +13,29 @@ spec:
         app: mzworker
     spec:
       volumes:
-        - name: secret-config
+        - name: rclone-config
           secret:
             secretName: blob-rclone-conf
-          # Writable copy of rclone config
-        - name: rclone-config-writable
-          emptyDir: {}
-        - name: mzdata
-          emptyDir: {}
         - name: rclone-cache
           hostPath:
             path: /tmp/rclone-mzworker-cache
             type: DirectoryOrCreate
       nodeSelector:
         disktype: MEM
-      # Init container copies secret → writable volume
-      initContainers:
-        - name: init-rclone-config
-          image: busybox
-          command:
-            - sh
-            - -c
-            - |
-              mkdir -p /config/rclone
-              cp /secret/rclone.conf /config/rclone/rclone.conf
-              chmod 600 /config/rclone/rclone.conf
-          volumeMounts:
-            - name: secret-config
-              mountPath: /secret
-              readOnly: true
-            - name: rclone-config-writable
-              mountPath: /config
       containers: 
-        - name: rclone
+        - name: deno
           securityContext:
             privileged: true
-          image: rclone/rclone:v1.72-stable
-          command:
-            - "rclone"
-            - "mount"
-            - "-v"
-            - "--allow-non-empty"
-            - "--read-only"
-            # - '--bind=0.0.0.0' ## ONLY needed for gdrive to speed up downloads
-            # - "--dir-cache-time=1h" ## NOT NEEDED AS MUCH AS POINTING TO LOCAL S3
-            - "--vfs-cache-max-age=72h"
-            - "--vfs-read-chunk-size=4M"
-            - "--vfs-read-chunk-size-limit=16M"
-            - "--vfs-cache-mode=full"
-            - "--buffer-size=256K"
-            - "--no-checksum"
-            - "--cache-dir=/mnt/cache"
-            - "--vfs-cache-max-size=1G"
-            - "blobmzodata:"
-            - "/mnt/data"
+          image: ghcr.io/mnsrulz/deno-rclone:latest
+          imagePullPolicy: Always
           volumeMounts:
-            - name: rclone-config-writable
-              mountPath: /config
-            - mountPath: /mnt/data
-              name: mzdata
-              mountPropagation: Bidirectional # this is important to make rclone mount visible in other containers (plex)
-            - mountPath: /mnt/cache
+            - mountPath: "/rcloneconfig/rclone.conf"
+              name: rclone-config
+              subPath: rclone.conf
+            - mountPath: /cache
               name: rclone-cache
-        - name: deno
-          image: denoland/deno:2.6.0
           env:
             - name: DATA_DIR
               value: "/data/options_data"
             - name: OHLC_DIR
               value: "/data/ohlc" 
-          command:
-            - "deno"
-            - "run"
-            - "--allow-all"
-            - "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/api/worker.ts"
-          volumeMounts:
-            - mountPath: /data
-              name: mzdata
-              readOnly: true
-              mountPropagation: HostToContainer
-
-
