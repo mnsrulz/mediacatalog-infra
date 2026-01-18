@@ -17,4 +17,4 @@ done
 
 echo "Rclone mount is ready."
 
-deno run --allow-all https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/api/worker.ts
+deno run --allow-all https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/hive/api/worker.ts
