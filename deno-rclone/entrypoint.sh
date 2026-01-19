@@ -6,7 +6,7 @@ mkdir -p /rcloneconfig    ## for storing the rclone config
 
 # Start Rclone mount in the background
 # We can also potentially rely on the ENV vars which can be setup in yaml files..
-rclone mount -v --allow-non-empty --allow-other --read-only --vfs-read-chunk-size=4M \
+rclone mount -v --allow-non-empty --allow-other --read-only --vfs-read-chunk-size=4M --vfs-cache-max-age=168h \
     --vfs-read-chunk-size-limit=16M --vfs-cache-mode=full --buffer-size=256K --no-checksum \
     --cache-dir=/cache --vfs-cache-max-size=512M blobmzodata: /data --config /rcloneconfig/rclone.conf &
 
