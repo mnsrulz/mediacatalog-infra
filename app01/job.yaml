@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: mzdata-daily-sync
 spec:
-  schedule: "0 7 * * *"       # 7:00 AM EST 
+  schedule: "30 7 * * *"       # 7:30 AM Local
   concurrencyPolicy: Forbid     # prevent overlap if job runs long
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
