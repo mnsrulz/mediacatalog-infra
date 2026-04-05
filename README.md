@@ -124,6 +124,11 @@ kubectl create configmap reactiveresumepostgres-config --from-literal=DB_PATH='/
 kubectl create secret generic reactiveresume-secrets --from-literal=POSTGRES_PASSWORD='' --from-literal=DATABASE_URL='postgresql://reactiveresume:@reactiveresumepostgres:5432/reactiveresume' --from-literal=AUTH_SECRET=''
 ```
 
+## mzworker
+```
+kubectl create secret generic mzworker --from-literal=PUSHER_APP_KEY='' --from-literal=PUSHER_URI=''
+```
+
 ## To increase the size of mount of k3s (needed to let it consume max memory)
 ```
 mount -o remount,size=15G /var/lib/kubelet

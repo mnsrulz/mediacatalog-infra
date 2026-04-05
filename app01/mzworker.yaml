@@ -39,3 +39,13 @@ spec:
               value: "/data/options_data"
             - name: OHLC_DIR
               value: "/data/ohlc" 
+            - name: PUSHER_APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mzworker
+                  key: PUSHER_APP_KEY
+            - name: PUSHER_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mzworker
+                  key: PUSHER_URI
