@@ -1,0 +1,66 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mzdata-weekly-consolidate
+spec:
+  schedule: "30 7 * * 0"       # every week on Sunday at 7:00 AM
+  concurrencyPolicy: Forbid     # prevent overlap if job runs long
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          volumes:
+            - name: rclone-config
+              secret:
+                secretName: blob-rclone-conf
+          containers:
+          - name: mount-rclone
+            securityContext:
+              privileged: true
+            image: python:3.14-slim
+            env:
+              - name: DATA_DIR
+                value: "/mnt/mzdata"
+              - name: TEMP_DIR
+                value: "/tmp/work"
+            command: ["sh", "-c"]
+            args:
+              - |
+                set -e
+                mkdir /mnt/mzdata
+                mkdir /tmp/work
+                
+                ## SETTING UP DEPENDENCIES
+                apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
+                python3 -m venv /opt/venv                
+                /opt/venv/bin/pip install --no-cache-dir pandas
+                
+                ### TODO SKIP MOUNTING THE ENTIRE DRIVE ###
+                rclone mount --config /config/rclone/rclone.conf seaweed:/odata /mnt/mzdata \
+                  --allow-non-empty --allow-other -v &
+                RCLONE_PID=$!
+
+                sleep 5
+                ls -l /mnt/mzdata
+                
+                # curl -L -o /tmp/job.py "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/jobs/main-options-data-consolidate.py"
+
+                # echo "script downloaded now executing after 5 seconds"
+                # sleep 5
+                # /opt/venv/bin/python -u /tmp/job.py
+
+                # ## TODO COPY ONLY THE NEEDED DATA
+                # echo "Syncing the work back to storage"
+                # rclone copy /tmp/work blobencrypted:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                # echo "Copying to blob done! Now copying to gdrive"
+                # rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                # echo "Copying to gdrive done! Now copying to seaweed s3"	
+                # rclone copy /tmp/work seaweed:/odata/ --progress -v	--fast-list --config /config/rclone/rclone.conf	
+                # echo "Copying to seaweed s3 done! Processing done!"
+            volumeMounts:
+              - mountPath: "/config/rclone/rclone.conf"
+                name: rclone-config
+                subPath: rclone.conf
