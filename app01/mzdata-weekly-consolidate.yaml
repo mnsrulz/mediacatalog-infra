@@ -23,15 +23,12 @@ spec:
             image: python:3.14-slim
             env:
               - name: DATA_DIR
-                value: "/mnt/mzdata"
-              - name: TEMP_DIR
-                value: "/tmp/work"
+                value: "/mnt/mzdata/w2-output"
             command: ["sh", "-c"]
             args:
               - |
                 set -e
                 mkdir /mnt/mzdata
-                mkdir /tmp/work
                 
                 ## SETTING UP DEPENDENCIES
                 apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
@@ -46,20 +43,13 @@ spec:
                 sleep 5
                 ls -l /mnt/mzdata
                 
-                # curl -L -o /tmp/job.py "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/jobs/main-options-data-consolidate.py"
+                curl -L -o /tmp/job.py "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/jobs/main-options-weekly-consolidate.py"
 
-                # echo "script downloaded now executing after 5 seconds"
-                # sleep 5
-                # /opt/venv/bin/python -u /tmp/job.py
+                echo "script downloaded now executing after 5 seconds"
+                sleep 5
+                /opt/venv/bin/python -u /tmp/job.py
 
-                # ## TODO COPY ONLY THE NEEDED DATA
-                # echo "Syncing the work back to storage"
-                # rclone copy /tmp/work blobencrypted:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
-                # echo "Copying to blob done! Now copying to gdrive"
-                # rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
-                # echo "Copying to gdrive done! Now copying to seaweed s3"	
-                # rclone copy /tmp/work seaweed:/odata/ --progress -v	--fast-list --config /config/rclone/rclone.conf	
-                # echo "Copying to seaweed s3 done! Processing done!"
+                echo "Processing done!"
             volumeMounts:
               - mountPath: "/config/rclone/rclone.conf"
                 name: rclone-config
