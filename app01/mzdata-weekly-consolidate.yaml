@@ -33,7 +33,7 @@ spec:
                 ## SETTING UP DEPENDENCIES
                 apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
                 python3 -m venv /opt/venv                
-                /opt/venv/bin/pip install --no-cache-dir pandas
+                /opt/venv/bin/pip install --no-cache-dir pandas pyarrow
                 
                 ### TODO SKIP MOUNTING THE ENTIRE DRIVE ###
                 rclone mount --config /config/rclone/rclone.conf seaweed:/odata /mnt/mzdata \
