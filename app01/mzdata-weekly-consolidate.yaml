@@ -24,11 +24,14 @@ spec:
             env:
               - name: DATA_DIR
                 value: "/mnt/mzdata/w2-output"
+              - name: TEMP_DIR
+                value: "/tmp/work"
             command: ["sh", "-c"]
             args:
               - |
                 set -e
                 mkdir /mnt/mzdata
+                mkdir /tmp/work
                 
                 ## SETTING UP DEPENDENCIES
                 apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
