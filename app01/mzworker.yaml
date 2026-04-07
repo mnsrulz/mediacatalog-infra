@@ -49,3 +49,8 @@ spec:
                 secretKeyRef:
                   name: mzworker
                   key: PUSHER_URI
+            - name: REDIS_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mzworker
+                  key: REDIS_URI
