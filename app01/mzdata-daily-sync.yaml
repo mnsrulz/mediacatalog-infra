@@ -40,12 +40,12 @@ spec:
                 
                 ## STEP1
                 echo "Syncing the data from git to storage"
-                rclone copy mzstorage:/files blobencrypted:/ODATA/w2/ --progress -v --fast-list --config /config/rclone/rclone.conf
-                rclone copy mzstorage:/ohlc blobencrypted:/ODATA/ohlc-raw/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy mzstorage:/files oci_s3:mzstorage/w2/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy mzstorage:/ohlc oci_s3:mzstorage/ohlc-raw/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Syncing finished to storage"
 
                 ### TODO SKIP MOUNTING THE ENTIRE DRIVE ###
-                rclone mount --config /config/rclone/rclone.conf blobencrypted:/ODATA /mnt/mzdata --read-only \
+                rclone mount --config /config/rclone/rclone.conf oci_s3:mzstorage /mnt/mzdata --read-only \
                   --allow-non-empty --allow-other -v &
                 RCLONE_PID=$!
 
@@ -60,7 +60,7 @@ spec:
 
                 ## TODO COPY ONLY THE NEEDED DATA
                 echo "Syncing the work back to storage"
-                rclone copy /tmp/work blobencrypted:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy /tmp/work oci_s3:mzstorage/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to blob done! Now copying to gdrive"
                 rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to gdrive done! Now copying to seaweed s3"	
