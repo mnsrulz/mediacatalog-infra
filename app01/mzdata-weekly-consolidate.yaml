@@ -24,6 +24,8 @@ spec:
             env:
               - name: DATA_DIR
                 value: "/mnt/mzdata/w2-output"
+              - name: OHLC_DATA_DIR
+                value: "/mnt/mzdata/ohlc"
               - name: TEMP_DIR
                 value: "/tmp/work"
             command: ["sh", "-c"]
