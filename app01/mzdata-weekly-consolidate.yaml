@@ -67,8 +67,8 @@ spec:
                 echo "Syncing to HF"
 
                 #Sync to HF
-                uvx hf sync /mnt/mzdata/w2-output hf://buckets/mnsrulz/mzstorage/w2-output
-                uvx hf sync /mnt/mzdata/ohlc hf://buckets/mnsrulz/mzstorage/ohlc
+                uvx hf sync /mnt/mzdata/w2-output hf://buckets/mnsrulz/mzstorage/w2-output --delete
+                uvx hf sync /mnt/mzdata/ohlc hf://buckets/mnsrulz/mzstorage/ohlc --delete
 
                 echo "Processing done!"
             volumeMounts:
