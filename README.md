@@ -117,6 +117,11 @@ kubectl create secret generic immich-secret --from-literal=JWT_SECRET=''
 kubectl create secret generic seaweed-secret --from-literal=SEAWEED_ACCESS_KEY_ID='' --from-literal=SEAWEED_ACCESS_KEY=''
 ```
 
+## hf config
+```
+kubectl create secret generic hf-token --from-literal=HF_TOKEN=''
+```
+
 ## reactive resume config
 ```
 kubectl create configmap reactiveresumepostgres-config --from-literal=DB_PATH='/home/reactiveresumedb'
