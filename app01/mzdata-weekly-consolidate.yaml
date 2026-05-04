@@ -28,6 +28,11 @@ spec:
                 value: "/mnt/mzdata/ohlc"
               - name: TEMP_DIR
                 value: "/tmp/work"
+              - name: HF_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: hf-token
+                    key: HF_TOKEN
             command: ["sh", "-c"]
             args:
               - |
@@ -37,9 +42,13 @@ spec:
                 
                 ## SETTING UP DEPENDENCIES
                 apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
-                python3 -m venv /opt/venv                
-                /opt/venv/bin/pip install --no-cache-dir pandas pyarrow
                 
+                ## Install uv
+                curl -LsSf https://astral.sh/uv/install.sh | sh 
+                export PATH="$HOME/.local/bin:$PATH"
+                . $HOME/.local/bin/env
+
+
                 ### TODO SKIP MOUNTING THE ENTIRE DRIVE ###
                 rclone mount --config /config/rclone/rclone.conf seaweed:/odata /mnt/mzdata \
                   --allow-non-empty --allow-other -v &
@@ -52,7 +61,14 @@ spec:
 
                 echo "script downloaded now executing after 5 seconds"
                 sleep 5
-                /opt/venv/bin/python -u /tmp/job.py
+
+                uv run --with pandas --with pyarrow /tmp/job.py
+
+                echo "Syncing to HF"
+
+                #Sync to HF
+                uvx hf sync /mnt/mzdata/w2-output hf://buckets/mnsrulz/mzstorage/w2-output
+                uvx hf sync /mnt/mzdata/ohlc hf://buckets/mnsrulz/mzstorage/ohlc
 
                 echo "Processing done!"
             volumeMounts:
