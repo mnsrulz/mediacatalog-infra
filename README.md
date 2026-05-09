@@ -131,7 +131,7 @@ kubectl create secret generic reactiveresume-secrets --from-literal=POSTGRES_PAS
 
 ## mzworker
 ```
-kubectl create secret generic mzworker --from-literal=PUSHER_APP_KEY='' --from-literal=PUSHER_URI='' --from-literal=REDIS_URI=''
+kubectl create secret generic mzworker --from-literal=PUSHER_APP_KEY='' --from-literal=PUSHER_URI='' --from-literal=REDIS_URI='' --from-literal=LOGTAIL_TOKEN=''
 ```
 
 ## To increase the size of mount of k3s (needed to let it consume max memory)
@@ -142,4 +142,10 @@ mount -o remount,size=15G /var/lib/kubelet
 ### To remove the ssh certs
 ```
 ssh-keygen -R 192.168.0.60
+```
+
+
+### To patch the secret
+```
+sudo kubectl patch secret mzworker -p='{"stringData":{"LOGTAIL_TOKEN":"value"}}'
 ```
