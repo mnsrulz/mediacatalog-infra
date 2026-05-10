@@ -71,8 +71,8 @@ spec:
                 uvx hf sync /mnt/mzdata/ohlc hf://buckets/mnsrulz/mzstorage/ohlc --delete
 
                 echo "Syncing to gdrive"
-                rclone sync seaweed:odata/w2-output/ gdrive:ODATA/w2-output/ --progress --transfers=32
-                rclone sync seaweed:odata/ohlc/ gdrive:ODATA/ohlc/ --progress --transfers=32
+                rclone sync seaweed:odata/w2-output/ gdrive:ODATA/w2-output/ --progress --transfers=32 --config /config/rclone/rclone.conf
+                rclone sync seaweed:odata/ohlc/ gdrive:ODATA/ohlc/ --progress --transfers=32 --config /config/rclone/rclone.conf
                 
 
                 echo "Processing done!"
