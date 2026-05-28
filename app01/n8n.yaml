@@ -38,6 +38,11 @@ spec:
           image: n8nio/n8n:2.1.4
           ports:
             - containerPort: 5678
+          env:
+            - name: N8N_PROTOCOL
+              value: https
+            - name: WEBHOOK_URL
+              value: https://n8n.local/
           volumeMounts:
             - mountPath: /home/node/.n8n
               name: n8n-data
