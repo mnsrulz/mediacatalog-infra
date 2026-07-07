@@ -70,7 +70,7 @@ spec:
                   name: mzworker
                   key: REDIS_URI
             - name: VALKEY_URI
-              value: "immichredis"       # Kubernetes Service name for Redis
+              value: "redis://immichredis"       # Kubernetes Service name for Redis
             - name: LOGTAIL_TOKEN
               valueFrom:
                 secretKeyRef:
