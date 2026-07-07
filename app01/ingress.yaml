@@ -56,6 +56,16 @@ spec:
                 name: plex-service
                 port:
                   number: 32400
+    - host: mzworker.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mzworker-service
+                port:
+                  number: 8000
     - host: duckdb.local
       http:
         paths:
