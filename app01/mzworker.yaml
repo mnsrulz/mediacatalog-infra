@@ -76,3 +76,13 @@ spec:
                 secretKeyRef:
                   name: mzworker
                   key: LOGTAIL_TOKEN
+            - name: TURSO_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mzworker
+                  key: TURSO_TOKEN
+            - name: TURSO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mzworker
+                  key: TURSO_URL

@@ -131,7 +131,7 @@ kubectl create secret generic reactiveresume-secrets --from-literal=POSTGRES_PAS
 
 ## mzworker
 ```
-kubectl create secret generic mzworker --from-literal=PUSHER_APP_KEY='' --from-literal=PUSHER_URI='' --from-literal=REDIS_URI='' --from-literal=LOGTAIL_TOKEN=''
+kubectl create secret generic mzworker --from-literal=PUSHER_APP_KEY='' --from-literal=PUSHER_URI='' --from-literal=REDIS_URI='' --from-literal=LOGTAIL_TOKEN='' --from-literal=TURSO_TOKEN='' --from-literal=TURSO_URL=''
 ```
 
 ## To increase the size of mount of k3s (needed to let it consume max memory)
