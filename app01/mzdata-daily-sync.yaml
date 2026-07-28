@@ -63,6 +63,7 @@ spec:
                 ls -l /mnt/mzdata
 
                 curl -L -o /tmp/job.py "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/jobs/main-options-data-consolidate.py"
+                curl -L -o /tmp/options-expirations-summary.json "https://raw.githubusercontent.com/mnsrulz/mztrading-data/refs/heads/main/data/options-expirations-summary.json"
 
                 echo "script downloaded now executing after 5 seconds"
                 sleep 5
@@ -76,6 +77,7 @@ spec:
                 rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to gdrive done! Now copying to seaweed s3"	
                 rclone copy /tmp/work seaweed:/odata/ --progress -v	--fast-list --config /config/rclone/rclone.conf	
+                rclone copy /tmp/options-expirations-summary.json seaweed:odata/static/ --config /config/rclone/rclone.conf
                 echo "Copying to seaweed s3 done! Now syncing to HF!"
                 
                 uvx hf sync /mnt/mzdata/w2 hf://buckets/mnsrulz/mzstorage/files

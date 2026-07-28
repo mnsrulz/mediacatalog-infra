@@ -53,7 +53,9 @@ spec:
             - name: DATA_DIR
               value: "/data/options_data"
             - name: OHLC_DIR
-              value: "/data/ohlc" 
+              value: "/data/ohlc"
+            - name: STATIC_DIR
+              value: "/data/static"
             - name: PUSHER_APP_KEY
               valueFrom:
                 secretKeyRef:
