@@ -151,7 +151,8 @@ ssh-keygen -R 192.168.0.60
 ```bash
 brew install mkcert
 mkcert -install
-mkcert "*.local"
+# Generate cert with explicit SANs per service
+mkcert argocd.local argo.local immich.local resume.local n8n.local s3.local plex.local mzworker.local duckdb.local
 # Copy CA cert for iPhone installation
 cp "$(mkcert -CAROOT)/rootCA.pem" ~/Desktop/
 ```
@@ -160,17 +161,23 @@ Send `rootCA.pem` to your iPhone (AirDrop/email) and install:
 - Settings → Profile Downloaded → Install
 - Settings → General → About → Certificate Trust Settings → toggle ON
 
-Send `_wildcard.local.pem` and `_wildcard.local-key.pem` to your Alpine server
-via croc: `croc send _wildcard.local.pem _wildcard.local-key.pem`
+Send the cert and key to your Alpine server via croc:
+```bash
+croc send argocd.local+8.pem argocd.local+8-key.pem
+```
 
 ### On Alpine (k3s) — create TLS secret in all namespaces
 ```bash
 for ns in $(sudo kubectl get ns -o name | cut -d/ -f2); do
+  sudo kubectl delete secret wildcard-local-tls -n "$ns" 2>/dev/null
   sudo kubectl create secret tls wildcard-local-tls \
-    --cert=_wildcard.local.pem --key=_wildcard.local-key.pem \
+    --cert=argocd.local+8.pem --key=argocd.local+8-key.pem \
     -n "$ns" --dry-run=client -o yaml | sudo kubectl apply -f -
 done
 ```
+
+### Renewal (every 2+ years)
+Regenerate on Mac, croc to Alpine, re-run the `for ns` loop above.
 
 The Ingress resources in this repo already reference `wildcard-local-tls` — ArgoCD will sync automatically after you commit and push.
 
