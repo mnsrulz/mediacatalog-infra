@@ -6,6 +6,10 @@ metadata:
   namespace: argo
 spec:
   ingressClassName: traefik
+  tls:
+  - hosts:
+    - argo.local
+    secretName: wildcard-local-tls
   rules:
     - host: argo.local
       http:

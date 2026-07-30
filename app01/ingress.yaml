@@ -5,6 +5,16 @@ metadata:
   name: mediacatalogadmin
 spec:
   ingressClassName: traefik
+  tls:
+  - hosts:
+    - immich.local
+    - resume.local
+    - n8n.local
+    - s3.local
+    - plex.local
+    - mzworker.local
+    - duckdb.local
+    secretName: wildcard-local-tls
   rules:
     - host: immich.local
       http:

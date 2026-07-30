@@ -145,6 +145,35 @@ ssh-keygen -R 192.168.0.60
 ```
 
 
+## TLS setup (local dev certs)
+
+### On your Mac (generate cert + install CA for local trust)
+```bash
+brew install mkcert
+mkcert -install
+mkcert "*.local"
+# Copy CA cert for iPhone installation
+cp "$(mkcert -CAROOT)/rootCA.pem" ~/Desktop/
+```
+
+Send `rootCA.pem` to your iPhone (AirDrop/email) and install:
+- Settings → Profile Downloaded → Install
+- Settings → General → About → Certificate Trust Settings → toggle ON
+
+Send `_wildcard.local.pem` and `_wildcard.local-key.pem` to your Alpine server
+via croc: `croc send _wildcard.local.pem _wildcard.local-key.pem`
+
+### On Alpine (k3s) — create TLS secret in all namespaces
+```bash
+for ns in $(sudo kubectl get ns -o name | cut -d/ -f2); do
+  sudo kubectl create secret tls wildcard-local-tls \
+    --cert=_wildcard.local.pem --key=_wildcard.local-key.pem \
+    -n "$ns" --dry-run=client -o yaml | sudo kubectl apply -f -
+done
+```
+
+The Ingress resources in this repo already reference `wildcard-local-tls` — ArgoCD will sync automatically after you commit and push.
+
 ### To patch the secret
 ```
 sudo kubectl patch secret mzworker -p='{"stringData":{"LOGTAIL_TOKEN":"value"}}'
