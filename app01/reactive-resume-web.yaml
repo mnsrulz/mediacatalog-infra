@@ -64,3 +64,5 @@ spec:
               value: http://seaweedfs:8333
             - name: S3_BUCKET
               value: reactive-resume
+            - name: FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI
+              value: "true"
