@@ -64,8 +64,3 @@ spec:
               value: http://seaweedfs:8333
             - name: S3_BUCKET
               value: reactive-resume
-            - name: ENCRYPTION_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: reactiveresume-secrets
-                  key: ENCRYPTION_SECRET
