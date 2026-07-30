@@ -29,58 +29,43 @@ spec:
         disktype: MEM
       containers:
         - name: reactiveresume
-          image: ghcr.io/amruthpillai/reactive-resume:v4.5.5
+          image: ghcr.io/amruthpillai/reactive-resume:v5.2.4
           ports:
             - name: resume-http
               containerPort: 3000
           env:
-            # - name: APP_URL
-            #   value: http://resume
-            - name: PUBLIC_URL
-              value: http://resume:3000
-            - name: STORAGE_DRIVER
-              value: s3
+            - name: APP_URL
+              value: https://resume.local
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: reactiveresume-secrets
+                  key: AUTH_SECRET
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: reactiveresume-secrets
                   key: DATABASE_URL
-            - name: ACCESS_TOKEN_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: reactiveresume-secrets
-                  key: AUTH_SECRET
-            - name: REFRESH_TOKEN_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: reactiveresume-secrets
-                  key: AUTH_SECRET
-            - name: CHROME_URL
-              value: http://chrome:4000
-            - name: CHROME_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: reactiveresume-secrets
-                  key: AUTH_SECRET
-            - name: STORAGE_URL
-              value: http://s3.local/reactive-resume
-            - name: STORAGE_ENDPOINT
-              value: seaweedfs
-            - name: STORAGE_PORT
-              value: "8333"
-            - name: S3_FORCE_PATH_STYLE
-              value: "true"
-            - name: STORAGE_BUCKET
-              value: reactive-resume
-            - name: S3_REGION
-              value: us-east-1
-            - name: STORAGE_ACCESS_KEY
+            - name: S3_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
                   name: seaweed-secret
                   key: SEAWEED_ACCESS_KEY_ID
-            - name: STORAGE_SECRET_KEY
+            - name: S3_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: seaweed-secret
                   key: SEAWEED_ACCESS_KEY
+            - name: S3_FORCE_PATH_STYLE
+              value: "true"
+            - name: S3_REGION
+              value: us-east-1
+            - name: S3_ENDPOINT
+              value: http://seaweedfs:8333
+            - name: S3_BUCKET
+              value: reactive-resume
+            - name: ENCRYPTION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: reactiveresume-secrets
+                  key: ENCRYPTION_SECRET
