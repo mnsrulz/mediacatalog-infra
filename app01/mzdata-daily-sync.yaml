@@ -74,7 +74,8 @@ spec:
                 echo "Syncing the work back to storage"
                 rclone copy /tmp/work oci_s3:mzstorage/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to ocis3 done! Now copying to gdrive"
-                rclone copy /tmp/work gdrive:/ODATA/ --progress -v --fast-list --config /config/rclone/rclone.conf
+
+                rclone copy /tmp/work gdrive:/ODATA/ --progress --transfers=32 -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to gdrive done! Now copying to seaweed s3"	
                 rclone copy /tmp/work seaweed:/odata/ --progress -v	--fast-list --config /config/rclone/rclone.conf	
                 rclone copy /tmp/options-expirations-summary.json seaweed:odata/static/ --config /config/rclone/rclone.conf
