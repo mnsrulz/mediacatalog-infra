@@ -72,6 +72,8 @@ spec:
                 
                 ## TODO COPY ONLY THE NEEDED DATA
                 echo "Syncing the work back to storage"
+                rclone copy /tmp/work/ohlc oci_s3:mzstorage/ohlc --progress -v --fast-list --config /config/rclone/rclone.conf
+                rclone copy /tmp/work/config.json oci_s3:mzstorage/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 ## rclone copy /tmp/work oci_s3:mzstorage/ --progress -v --fast-list --config /config/rclone/rclone.conf
                 echo "Copying to ocis3 done! Now copying to gdrive"
 
