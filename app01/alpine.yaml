@@ -27,7 +27,7 @@ spec:
           command: ["sleep"]
           args: ["infinity"]
           volumeMounts:
-            - mountPath: "/config/rclone/rclone.conf"
+            - mountPath: "/root/.config/rclone/rclone.conf"
               name: rclone-config
               subPath: rclone.conf
             - mountPath: /mnt
