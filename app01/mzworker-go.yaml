@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mzworker-go-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mzworker-go
+  template:
+    metadata:
+      labels:
+        app: mzworker-go
+    spec:
+      volumes:
+        - name: rclone-config
+          secret:
+            secretName: blob-rclone-conf
+        - name: rclone-cache
+          hostPath:
+            path: /tmp/rclone-mzworker-cache
+            type: DirectoryOrCreate
+      nodeSelector:
+        disktype: MEM
+      containers:
+        - name: mzworker-go
+          securityContext:
+            privileged: true
+          image: ghcr.io/mnsrulz/mzworker-go-rclone:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: "/rcloneconfig/rclone.conf"
+              name: rclone-config
+              subPath: rclone.conf
+            - mountPath: /cache
+              name: rclone-cache
+          env:
+            - name: RCLONE_REMOTE
+              value: "seaweed"
+            - name: RCLONE_CONFIG
+              value: "/rcloneconfig/rclone.conf"
+            - name: DATA_DIR
+              value: "/data"
+            - name: AMQP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cloudamqp-secret
+                  key: AMQP_URI
+            - name: AMQP_REQUEST_QUEUE
+              value: "mzworker_request"
+
