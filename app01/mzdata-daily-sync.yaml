@@ -86,6 +86,8 @@ spec:
                 uvx hf sync /mnt/mzdata/w2 hf://buckets/mnsrulz/mzstorage/files
                 uvx hf sync /mnt/mzdata/ohlc-raw hf://buckets/mnsrulz/mzstorage/ohlc-raw
                 uvx hf sync /tmp/work/w2-output hf://buckets/mnsrulz/mzstorage/w2-output
+                uvx hf sync /tmp/work/ohlc hf://buckets/mnsrulz/mzstorage/ohlc
+                uvx hf cp /tmp/options-expirations-summary.json hf://buckets/mnsrulz/mzstorage/static/options-expirations-summary.json
                 
                 echo "Sync completed!"
             volumeMounts:
