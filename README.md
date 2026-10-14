@@ -350,3 +350,15 @@ Secrets are created imperatively and **are not tracked in git**. Ensure you:
 - Export secrets regularly: `kubectl get secrets -o yaml > secrets-backup.yaml`
 - Store `rootCA.pem` (mkcert CA) safely
 - Keep a copy of `rclone.conf` offline
+
+## Install duckdns and ssl
+```bash
+curl https://get.acme.sh | sh -s email=my@example.com
+```
+
+```bash
+export DuckDNS_Token=XXXXX
+
+# Issue SSL certificate for your DuckDNS domain
+./acme.sh --issue --dns dns_duckdns -d yourdomain.duckdns.org --ecc
+```
