@@ -28,7 +28,7 @@ spec:
                   curl -LsSf https://astral.sh/uv/install.sh | sh 
                   export PATH="$HOME/.local/bin:$PATH"
                   . $HOME/.local/bin/env
-                  uvx hf sync "hf://buckets/${HF_BUCKET}" /data
+                  uvx hf sync "${HF_BUCKET}" /data
                   echo "Sync completed!"
               env:
                 - name: HF_TOKEN
