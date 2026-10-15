@@ -20,15 +20,16 @@ spec:
               args:
                 - |
                   set -e
-                  
-                  ## SETTING UP DEPENDENCIES
-                  apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
-
                   ## Install uv
                   curl -LsSf https://astral.sh/uv/install.sh | sh 
                   export PATH="$HOME/.local/bin:$PATH"
                   . $HOME/.local/bin/env
-                  uvx hf sync "${HF_BUCKET}" /data
+
+                  mkdir -p /data/w2-output /data/ohlc /data/static
+
+                  uvx hf sync "${HF_BUCKET}/w2-output" /data/w2-output
+                  uvx hf sync "${HF_BUCKET}/ohlc" /data/ohlc
+                  uvx hf sync "${HF_BUCKET}/static" /data/static
                   echo "Sync completed!"
               env:
                 - name: HF_TOKEN
