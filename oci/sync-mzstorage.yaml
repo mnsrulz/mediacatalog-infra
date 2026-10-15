@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sync-mzstorage
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: sync
+              image: ghcr.io/astral-sh/uv:0.13
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  uvx hf sync "hf://buckets/${HF_BUCKET}" /data
+              env:
+                - name: HF_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: app-secrets
+                      key: HF_TOKEN
+                - name: HF_BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: app-secrets
+                      key: HF_BUCKET
+              volumeMounts:
+                - name: host-bucket
+                  mountPath: /data
+          volumes:
+            - name: host-bucket
+              hostPath:
+                path: /opt/mz-hf-bucket
+                type: Directory
