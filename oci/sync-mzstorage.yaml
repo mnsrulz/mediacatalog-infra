@@ -14,13 +14,22 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: sync
-              image: ghcr.io/astral-sh/uv:0.13
+              image: python:3.14-slim
               imagePullPolicy: IfNotPresent
-              command:
-                - /bin/sh
-                - -ec
+              command: ["sh", "-c"]
+              args:
                 - |
+                  set -e
+                  
+                  ## SETTING UP DEPENDENCIES
+                  apt-get update && apt-get install -y fuse libfuse2 curl unzip rclone
+
+                  ## Install uv
+                  curl -LsSf https://astral.sh/uv/install.sh | sh 
+                  export PATH="$HOME/.local/bin:$PATH"
+                  . $HOME/.local/bin/env
                   uvx hf sync "hf://buckets/${HF_BUCKET}" /data
+                  echo "Sync completed!"
               env:
                 - name: HF_TOKEN
                   valueFrom:
