@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mzworker-go-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mzworker-go
+  template:
+    metadata:
+      labels:
+        app: mzworker-go
+    spec:
+      volumes:
+        - name: odata
+          hostPath:
+            path: /opt/mz-hf-bucket
+            type: Directory
+      nodeSelector:
+        disktype: MEM
+      containers:
+        - name: mzworker-go
+          image: ghcr.io/mnsrulz/mzworker-go:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /mnt/ODATA
+              name: odata
+          env:
+            - name: DATA_DIR
+              value: "/mnt/ODATA"
+            - name: AMQP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: AMQP_URI
+            - name: AMQP_REQUEST_QUEUE
+              value: "mztrading.requests"
