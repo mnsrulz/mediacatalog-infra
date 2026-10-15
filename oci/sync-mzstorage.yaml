@@ -20,6 +20,10 @@ spec:
               args:
                 - |
                   set -e
+                  
+                  ## SETTING UP DEPENDENCIES
+                  apt-get install -y curl
+                  
                   ## Install uv
                   curl -LsSf https://astral.sh/uv/install.sh | sh 
                   export PATH="$HOME/.local/bin:$PATH"
