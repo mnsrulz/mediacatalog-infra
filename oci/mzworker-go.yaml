@@ -17,8 +17,6 @@ spec:
           hostPath:
             path: /opt/mz-hf-bucket
             type: Directory
-      nodeSelector:
-        disktype: MEM
       containers:
         - name: mzworker-go
           image: ghcr.io/mnsrulz/mzworker-go:latest
