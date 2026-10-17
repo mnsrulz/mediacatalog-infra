@@ -36,6 +36,8 @@ spec:
       containers: 
         - name: seaweedfs
           image: ghcr.io/seaweedfs/seaweedfs:4.48.0
+          command: ["/usr/bin/weed"]
+            args: ["mini", "-dir=/data"]
           env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
