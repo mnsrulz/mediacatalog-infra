@@ -47,10 +47,6 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: SEAWEED_ACCESS_KEY
-          command:
-            - "weed"
-            - "mini"
-            - "-dir=/data"
           ports:
             - containerPort: 9333
             - containerPort: 8080
