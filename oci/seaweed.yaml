@@ -40,12 +40,12 @@ spec:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: seaweed-secret
+                  name: app-secrets
                   key: SEAWEED_ACCESS_KEY_ID
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: seaweed-secret
+                  name: app-secrets
                   key: SEAWEED_ACCESS_KEY
           command:
             - "weed"
