@@ -33,8 +33,6 @@ spec:
         - name: seawood-data
           hostPath:
             path: /var/lib/seaweedfs
-      nodeSelector:
-        disktype: SSD
       containers: 
         - name: seaweedfs
           image: chrislusf/seaweedfs:4.05_full
