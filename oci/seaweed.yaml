@@ -36,8 +36,6 @@ spec:
       containers: 
         - name: seaweedfs
           image: ghcr.io/seaweedfs/seaweedfs:4.48.0
-          command: ["/usr/bin/weed"]
-            args: ["mini", "-dir=/data"]
           env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
@@ -49,6 +47,10 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: SEAWEED_ACCESS_KEY
+          command:
+            - "/usr/bin/weed"
+            - "mini"
+            - "-dir=/data"
           ports:
             - containerPort: 9333
             - containerPort: 8080
