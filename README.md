@@ -351,6 +351,12 @@ Secrets are created imperatively and **are not tracked in git**. Ensure you:
 - Store `rootCA.pem` (mkcert CA) safely
 - Keep a copy of `rclone.conf` offline
 
+## Restic Backup restore
+```bash
+restic -r /WD_BLACK/backup mount ~/restic-mount
+rclone copy ~/restic-mount/snapshots/latest/...../media seaweed...:immich/media -P
+```
+
 ## Install duckdns and ssl
 ```bash
 curl https://get.acme.sh | sh -s email=my@example.com
@@ -362,3 +368,4 @@ export DuckDNS_Token=XXXXX
 # Issue SSL certificate for your DuckDNS domain
 ./acme.sh --issue --dns dns_duckdns -d yourdomain.duckdns.org --ecc
 ```
+
