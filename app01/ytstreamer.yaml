@@ -1,44 +1,44 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ytstreamer
-spec:
-  ports:
-    - name: mediastreamerport
-      port: 8000
-      targetPort: 8000
-  selector:
-    app: ytstreamer
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: ytstreamer
+# spec:
+#   ports:
+#     - name: mediastreamerport
+#       port: 8000
+#       targetPort: 8000
+#   selector:
+#     app: ytstreamer
 
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ytstreamer
-spec:
-  selector:
-    matchLabels:
-      app: ytstreamer
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ytstreamer
-    spec:
-      nodeSelector:
-        disktype: MEM
-      containers:
-        - name: ytstreamer
-          image: ghcr.io/mnsrulz/ytdlp-web:latest
-          imagePullPolicy: Always
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: ytstreamer
+# spec:
+#   selector:
+#     matchLabels:
+#       app: ytstreamer
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: ytstreamer
+#     spec:
+#       nodeSelector:
+#         disktype: MEM
+#       containers:
+#         - name: ytstreamer
+#           image: ghcr.io/mnsrulz/ytdlp-web:latest
+#           imagePullPolicy: Always
           
-          ports:
-            - containerPort: 8000
-          env:
-            - name: ENABLE_VP9
-              value: "0"
-            - name: ENABLE_AVC
-              value: "1"
+#           ports:
+#             - containerPort: 8000
+#           env:
+#             - name: ENABLE_VP9
+#               value: "0"
+#             - name: ENABLE_AVC
+#               value: "1"
 
 
