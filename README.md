@@ -203,6 +203,7 @@ kubectl create secret generic mzworker \
   --from-literal=TURSO_URL=''
 
 # rclone config (for cloud storage mounts)
+kubectl delete secret blob-rclone-conf
 kubectl create secret generic blob-rclone-conf --from-file=rclone.conf
 
 # SeaweedFS
