@@ -39,7 +39,7 @@ spec:
           hostPath:
             path: /media
       nodeSelector:
-        disktype: MEM
+        disktype: SSD
       containers:
         # - name: rclone
         #   securityContext:
@@ -84,7 +84,7 @@ spec:
           - |
             echo "Mounting and starting Immich Server..."
             rclone mount -v --allow-non-empty --allow-other \
-              --dir-cache-time=72h --vfs-cache-max-age=72h --vfs-cache-mode=minimal --cache-dir=/mnt/cache --vfs-cache-max-size=4G --vfs-cache-min-free-space=2G \
+              --dir-cache-time=72h --vfs-cache-max-age=72h --vfs-cache-mode=full --cache-dir=/mnt/cache --vfs-cache-max-size=4G --vfs-cache-min-free-space=2G \
               --vfs-read-chunk-size=4M --vfs-read-chunk-size-limit=16M --buffer-size=1M --no-checksum \
               seaweed_oci:immich/media/ /data & start.sh
           securityContext:
