@@ -1,6 +1,6 @@
 FROM rclone/rclone:v1.72-stable AS rclone
 
-FROM lscr.io/linuxserver/plex:1.43.4
+FROM lscr.io/linuxserver/plex:1.43.5
 
 COPY --from=rclone /usr/local/bin/rclone /usr/bin/rclone
 
