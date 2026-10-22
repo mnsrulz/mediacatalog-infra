@@ -4,10 +4,12 @@ FROM lscr.io/linuxserver/plex:1.43.5
 
 COPY --from=rclone /usr/local/bin/rclone /usr/bin/rclone
 
+RUN install -d -m 1777 /run/plex-temp
+
 # GOT this from rclone dockerfile
 RUN echo "**** Install Dependencies ****" && \
-    apt update && \
-    apt install -y \
+    apt-get update && \
+    apt-get install -y \
         ca-certificates \
         fuse3 \
         tzdata && \
