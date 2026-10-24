@@ -14,21 +14,13 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: sync
-              image: python:3.14-slim
+              image: astral/uv:python3.12-bookworm-slim
               imagePullPolicy: IfNotPresent
               command: ["sh", "-c"]
               args:
                 - |
                   set -e
                   
-                  ## SETTING UP DEPENDENCIES
-                  apt-get update && apt-get install -y curl
-
-                  ## Install uv
-                  curl -LsSf https://astral.sh/uv/install.sh | sh 
-                  export PATH="$HOME/.local/bin:$PATH"
-                  . $HOME/.local/bin/env
-
                   mkdir -p /data/w2-output /data/ohlc /data/static
 
                   uvx hf sync "${HF_BUCKET}/w2-output" /data/w2-output
