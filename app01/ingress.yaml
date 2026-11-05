@@ -14,6 +14,7 @@ spec:
     - plex.local
     - mzworker.local
     - duckdb.local
+    - streamer.local
     secretName: wildcard-local-tls
   rules:
     - host: immich.local
@@ -76,16 +77,26 @@ spec:
                 name: mzworker-service
                 port:
                   number: 8000
-    - host: duckdb.local
+    - host: mzworker.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: duckdb
+                name: mzworker-service
                 port:
-                  number: 4213
+                  number: 8000
+    - host: streamer.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mediastreamer
+                port:
+                  number: 3000
     - http:
         paths:
           - path: /streamer
