@@ -49,8 +49,8 @@ spec:
               value: "0"
             - name: MAX_BUFFER_SIZE_MB
               value: "512"
-            - name: ROOT_PATH
-              value: "/streamer"
+            # - name: ROOT_PATH
+            #   value: "/streamer"
 
 
 
