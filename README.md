@@ -185,6 +185,11 @@ Secrets are created imperatively. Substitute empty values as needed.
 kubectl create secret generic mediastreamer \
   --from-literal=LINKS_API_URL='https://user:pass@cachecacheapp'
 
+# zip service
+kubectl create secret generic zipservice \
+  --from-literal=ZIP_API_URL='https://zipservice'
+
+
 # mediatcatalogworker
 kubectl create secret generic mediacatalogworker \
   --from-literal=PUSHER_APP_KEY='' \
