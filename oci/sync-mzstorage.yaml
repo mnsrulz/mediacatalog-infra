@@ -23,9 +23,9 @@ spec:
                   
                   mkdir -p /data/w2-output /data/ohlc /data/static
 
-                  uvx hf sync "${HF_BUCKET}/w2-output" /data/w2-output
-                  uvx hf sync "${HF_BUCKET}/ohlc" /data/ohlc
-                  uvx hf sync "${HF_BUCKET}/static" /data/static
+                  uvx hf sync "${HF_BUCKET}/w2-output" /data/w2-output --delete
+                  uvx hf sync "${HF_BUCKET}/ohlc" /data/ohlc --delete
+                  uvx hf sync "${HF_BUCKET}/static" /data/static --delete
                   echo "Sync completed!"
               env:
                 - name: HF_TOKEN
